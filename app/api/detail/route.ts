@@ -65,9 +65,26 @@ export async function GET(request: NextRequest) {
     try {
       const videoDetail = await getVideoDetail(id, sourceConfig);
       
-      // Skip validation - videos are already checked during search
-      // Just return the episodes as-is
+      // Validate episodes to filter out broken URLs
       console.log(`[GET] Fetching video details for ${id} from ${sourceConfig.name}`);
+      
+      if (videoDetail.episodes && videoDetail.episodes.length > 0) {
+        const originalCount = videoDetail.episodes.length;
+        const validEpisodes = await filterValidEpisodes(videoDetail.episodes);
+        
+        if (validEpisodes.length === 0) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: 'No valid episodes available for this video from this source',
+            },
+            { status: 404 }
+          );
+        }
+        
+        videoDetail.episodes = validEpisodes;
+        console.log(`Filtered episodes: ${validEpisodes.length}/${originalCount} valid`);
+      }
       
       return NextResponse.json({
         success: true,

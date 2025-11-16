@@ -20,7 +20,7 @@ export interface SourceCheckResult {
 
 /**
  * Check if a single video URL is accessible and actually contains video content
- * More accurate detection with multiple validation steps
+ * More accurate detection with multiple validation steps and stricter checks
  */
 async function checkVideoUrl(url: string, retries = MAX_RETRIES): Promise<boolean> {
   if (!isValidUrlFormat(url)) {
@@ -95,12 +95,42 @@ async function checkVideoUrl(url: string, retries = MAX_RETRIES): Promise<boolea
       // Check 3: For video files, check if server supports range requests (good sign)
       const supportsRanges = acceptRanges === 'bytes' || response.status === 206;
 
-      // Video must pass content type check AND either have valid length OR support ranges
-      if (hasValidContentType && (hasValidLength || supportsRanges)) {
-        return true;
+      // Video must pass ALL checks to be considered valid:
+      // 1. Must have valid video content type
+      // 2. Must have reasonable content length OR support range requests
+      // 3. For better reliability, prefer sources that support ranges (streaming capability)
+      if (!hasValidContentType) {
+        console.debug(`Invalid content type for ${url.substring(0, 50)}...`);
+        return false;
+      }
+      
+      if (!hasValidLength && !supportsRanges) {
+        console.debug(`Invalid content length and no range support for ${url.substring(0, 50)}...`);
+        return false;
       }
 
-      return false;
+      // Additional strict check: Try to fetch a small byte range to verify actual content
+      try {
+        const verifyResponse = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+            'Referer': new URL(url).origin,
+            'Range': 'bytes=0-1024', // Fetch first 1KB
+          },
+        });
+        
+        // If we can't even fetch the first 1KB, it's not a valid source
+        if (!verifyResponse.ok && verifyResponse.status !== 206) {
+          console.debug(`Failed to verify content for ${url.substring(0, 50)}...`);
+          return false;
+        }
+      } catch (verifyError) {
+        console.debug(`Verification fetch failed for ${url.substring(0, 50)}...`);
+        return false;
+      }
+
+      return true;
     } catch (error) {
       // If last attempt, return false
       if (attempt === retries) {

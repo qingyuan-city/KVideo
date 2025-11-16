@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/Badge';
 import { Icons } from '@/components/ui/Icon';
 import { SearchLoadingAnimation } from '@/components/SearchLoadingAnimation';
 import Image from 'next/image';
+import { testVideoPlayback } from '@/lib/utils/client-video-validator';
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
@@ -20,11 +21,71 @@ export default function Home() {
   const [availableSources, setAvailableSources] = useState<any[]>([]);
   const [currentSource, setCurrentSource] = useState<string>('');
   const [checkedSources, setCheckedSources] = useState(0);
-  const [searchStage, setSearchStage] = useState<'searching' | 'checking'>('searching');
+  const [searchStage, setSearchStage] = useState<'searching' | 'checking' | 'validating'>('searching');
   const [checkedVideos, setCheckedVideos] = useState(0);
   const [totalVideos, setTotalVideos] = useState(0);
   const router = useRouter();
   const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Extract first video URL from search result
+  const extractFirstVideoUrl = (video: any): string | null => {
+    if (!video.vod_play_url) return null;
+    
+    try {
+      const episodes = video.vod_play_url.split('#').filter((ep: string) => ep.trim());
+      for (const episode of episodes) {
+        const parts = episode.split('$');
+        if (parts.length >= 2) {
+          const url = parts[1].trim();
+          if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+            return url;
+          }
+        } else if (parts.length === 1) {
+          const url = parts[0].trim();
+          if (url && (url.startsWith('http://') || url.startsWith('https://'))) {
+            return url;
+          }
+        }
+      }
+    } catch (error) {
+      return null;
+    }
+    return null;
+  };
+
+  // Validate videos in browser
+  const validateVideosInBrowser = async (videos: any[]) => {
+    const validatedVideos: any[] = [];
+    
+    // Test videos in batches of 3 for better performance
+    for (let i = 0; i < videos.length; i += 3) {
+      const batch = videos.slice(i, i + 3);
+      
+      const results = await Promise.all(
+        batch.map(async (video) => {
+          const url = extractFirstVideoUrl(video);
+          if (!url) {
+            console.debug(`❌ No valid URL for video: ${video.vod_name}`);
+            return null;
+          }
+          
+          const testResult = await testVideoPlayback(url);
+          
+          if (testResult.canPlay) {
+            console.debug(`✅ Video playable: ${video.vod_name} (${video.source})`);
+            return video;
+          } else {
+            console.debug(`❌ Video not playable: ${video.vod_name} - ${testResult.error}`);
+            return null;
+          }
+        })
+      );
+      
+      validatedVideos.push(...results.filter(v => v !== null));
+    }
+    
+    return validatedVideos;
+  };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,25 +165,34 @@ export default function Home() {
                 break;
 
               case 'videos':
-                // Add new videos immediately - NO DELAY
-                const newVideos = data.videos.map((video: any) => ({
+                // Validate videos in browser before showing them
+                console.log('📹 收到新视频:', data.videos.length, '个 - 开始浏览器验证...');
+                setSearchStage('validating');
+                
+                const validatedVideos = await validateVideosInBrowser(data.videos);
+                
+                console.log(`✅ 验证完成: ${validatedVideos.length}/${data.videos.length} 个视频可播放`);
+                
+                // Only add validated videos
+                const newVideos = validatedVideos.map((video: any) => ({
                   ...video,
                   sourceName: getSourceName(video.source),
                   isNew: true,
-                  addedAt: Date.now(), // Track when video was added
+                  addedAt: Date.now(),
                 }));
 
-                console.log('📹 收到新视频:', newVideos.length, '个');
-
-                // Add to allVideos array
-                allVideos.push(...newVideos);
-                
-                console.log('🎬 当前总视频数:', allVideos.length);
-                
-                // Update state with all videos
-                setResults([...allVideos]);
+                if (newVideos.length > 0) {
+                  // Add to allVideos array
+                  allVideos.push(...newVideos);
+                  
+                  console.log('🎬 当前总视频数:', allVideos.length);
+                  
+                  // Update state with validated videos
+                  setResults([...allVideos]);
+                }
 
                 // Update progress
+                setSearchStage('checking');
                 setCheckedVideos(data.checkedVideos);
                 setTotalVideos(data.totalVideos);
 

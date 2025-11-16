@@ -8,7 +8,7 @@ interface SearchLoadingAnimationProps {
   totalSources?: number;
   checkedVideos?: number;
   totalVideos?: number;
-  stage?: 'searching' | 'checking';
+  stage?: 'searching' | 'checking' | 'validating';
 }
 
 export function SearchLoadingAnimation({ 
@@ -29,17 +29,21 @@ export function SearchLoadingAnimation({
   }, []);
 
   // Calculate unified progress (0-100%)
-  // Stage 1: Search sources (0-60%)
-  // Stage 2: Check videos (60-100%)
+  // Stage 1: Search sources (0-50%)
+  // Stage 2: Check videos (50-80%)
+  // Stage 3: Validate in browser (80-100%)
   let progress = 0;
   let statusText = '';
   
   if (stage === 'searching') {
-    progress = totalSources > 0 ? (checkedSources / totalSources) * 60 : 0;
+    progress = totalSources > 0 ? (checkedSources / totalSources) * 50 : 0;
     statusText = `${checkedSources}/${totalSources} 个源`;
   } else if (stage === 'checking') {
-    progress = 60 + (totalVideos > 0 ? (checkedVideos / totalVideos) * 40 : 0);
+    progress = 50 + (totalVideos > 0 ? (checkedVideos / totalVideos) * 30 : 0);
     statusText = `${checkedVideos}/${totalVideos} 个视频`;
+  } else if (stage === 'validating') {
+    progress = 80 + Math.min(20, Math.random() * 20); // Animated progress for validation
+    statusText = '验证播放能力';
   }
 
   return (
@@ -61,7 +65,7 @@ export function SearchLoadingAnimation({
         </svg>
         
         <span className="text-sm font-medium text-[var(--text-color-secondary)]">
-          {stage === 'searching' ? '正在搜索视频源' : '正在检测视频可用性'}{dots}
+          {stage === 'searching' ? '正在搜索视频源' : stage === 'validating' ? '正在验证视频播放能力' : '正在检测视频可用性'}{dots}
         </span>
       </div>
 

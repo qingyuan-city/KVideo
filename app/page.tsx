@@ -224,7 +224,7 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 relative flex items-center justify-center">
                 <Image 
-                  src="/favicon.ico" 
+                  src="/icon.png" 
                   alt="KVideo" 
                   width={40} 
                   height={40}

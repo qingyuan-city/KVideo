@@ -102,9 +102,9 @@ export async function POST(request: NextRequest) {
 
         const availableVideos: any[] = [];
         let checkedCount = 0;
-        const concurrency = 5; // Smaller batches for faster response
+        const concurrency = 10; // Check 10 videos at a time
 
-        // Process videos in smaller batches for immediate feedback
+        // Process videos in batches for immediate feedback
         for (let i = 0; i < allVideos.length; i += concurrency) {
           const batch = allVideos.slice(i, i + concurrency);
           

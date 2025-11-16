@@ -16,9 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "KVideo - 视频聚合平台",
   description: "Multi-source video aggregation platform with beautiful Liquid Glass UI",
-  icons: {
-    icon: '/favicon.ico',
-  },
 };
 
 export default function RootLayout({

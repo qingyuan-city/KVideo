@@ -61,30 +61,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch video detail with automatic episode validation
+    // Fetch video detail without validation (already validated during search)
     try {
       const videoDetail = await getVideoDetail(id, sourceConfig);
       
-      // Validate episodes to filter out broken sources
-      if (videoDetail.episodes && videoDetail.episodes.length > 0) {
-        console.log(`[GET] Validating ${videoDetail.episodes.length} episodes for video ${id}...`);
-        const validatedEpisodes = await filterValidEpisodes(videoDetail.episodes);
-        const workingEpisodes = validatedEpisodes.filter(ep => ep.isValid);
-        
-        console.log(`[GET] Found ${workingEpisodes.length} working episodes out of ${videoDetail.episodes.length}`);
-        
-        if (workingEpisodes.length === 0) {
-          return NextResponse.json(
-            {
-              success: false,
-              error: 'No playable episodes found from this source. Please try another source.',
-            },
-            { status: 404 }
-          );
-        }
-        
-        videoDetail.episodes = workingEpisodes;
-      }
+      // Skip validation - videos are already checked during search
+      // Just return the episodes as-is
+      console.log(`[GET] Fetching video details for ${id} from ${sourceConfig.name}`);
       
       return NextResponse.json({
         success: true,
@@ -165,30 +148,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch video detail with automatic episode validation
+    // Fetch video detail without validation (already validated during search)
     try {
       const videoDetail = await getVideoDetail(id, sourceConfig);
       
-      // Validate episodes to filter out broken sources
-      if (videoDetail.episodes && videoDetail.episodes.length > 0) {
-        console.log(`[POST] Validating ${videoDetail.episodes.length} episodes for video ${id}...`);
-        const validatedEpisodes = await filterValidEpisodes(videoDetail.episodes);
-        const workingEpisodes = validatedEpisodes.filter(ep => ep.isValid);
-        
-        console.log(`[POST] Found ${workingEpisodes.length} working episodes out of ${videoDetail.episodes.length}`);
-        
-        if (workingEpisodes.length === 0) {
-          return NextResponse.json(
-            {
-              success: false,
-              error: 'No playable episodes found from this source. Please try another source.',
-            },
-            { status: 404 }
-          );
-        }
-        
-        videoDetail.episodes = workingEpisodes;
-      }
+      // Skip validation - videos are already checked during search
+      // Just return the episodes as-is
+      console.log(`[POST] Fetching video details for ${id} from ${sourceConfig.name}`);
       
       return NextResponse.json({
         success: true,

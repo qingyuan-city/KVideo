@@ -156,11 +156,11 @@ function PlayerContent() {
           <div className="flex items-center justify-between">
             <Button 
               variant="secondary" 
-              onClick={() => router.push('/')}
+              onClick={() => router.back()}
               className="flex items-center gap-2"
             >
               <Icons.ChevronLeft size={20} />
-              <span>返回首页</span>
+              <span>返回</span>
             </Button>
             <ThemeSwitcher />
           </div>
@@ -182,11 +182,11 @@ function PlayerContent() {
               <div className="flex gap-3 justify-center">
                 <Button 
                   variant="primary"
-                  onClick={() => router.push('/')}
+                  onClick={() => router.back()}
                   className="flex items-center gap-2"
                 >
                   <Icons.ChevronLeft size={20} />
-                  <span>返回搜索其他源</span>
+                  <span>返回</span>
                 </Button>
                 <Button 
                   variant="secondary"
@@ -229,11 +229,11 @@ function PlayerContent() {
                               </Button>
                               <Button 
                                 variant="secondary"
-                                onClick={() => router.push('/')}
+                                onClick={() => router.back()}
                                 className="flex items-center gap-2"
                               >
                                 <Icons.ChevronLeft size={16} />
-                                <span>选择其他源</span>
+                                <span>返回</span>
                               </Button>
                             </div>
                           </div>

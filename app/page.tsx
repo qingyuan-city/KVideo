@@ -64,17 +64,8 @@ function HomePage() {
         console.log('🔍 Auto-searching for URL query:', urlQuery);
         setTimeout(() => performSearch(urlQuery, false), 100);
       }
-    } else if (cached) {
-      // No URL query but cache exists - restore last search
-      console.log('📦 Restoring last search from cache:', cached.query);
-      setQuery(cached.query);
-      setResults(cached.results);
-      setAvailableSources(cached.availableSources);
-      setHasSearched(true);
-      
-      // Update URL to reflect cached search
-      router.replace(`/?q=${encodeURIComponent(cached.query)}`, { scroll: false });
     }
+    // If no URL query, show clean homepage (don't restore cache automatically)
   }, [searchParams, router]);
 
   // Cache helper functions

@@ -35,6 +35,7 @@ export function CustomVideoPlayer({
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   
   const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const speedMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const isDraggingProgressRef = useRef(false);
   const isDraggingVolumeRef = useRef(false);
 
@@ -255,7 +256,37 @@ export function CustomVideoPlayer({
     videoRef.current.playbackRate = speed;
     setPlaybackRate(speed);
     setShowSpeedMenu(false);
+    // Clear timeout when manually closing
+    if (speedMenuTimeoutRef.current) {
+      clearTimeout(speedMenuTimeoutRef.current);
+    }
   };
+
+  // Auto-hide speed menu after 1.5s of inactivity
+  const startSpeedMenuTimeout = () => {
+    if (speedMenuTimeoutRef.current) {
+      clearTimeout(speedMenuTimeoutRef.current);
+    }
+    speedMenuTimeoutRef.current = setTimeout(() => {
+      setShowSpeedMenu(false);
+    }, 1500);
+  };
+
+  const clearSpeedMenuTimeout = () => {
+    if (speedMenuTimeoutRef.current) {
+      clearTimeout(speedMenuTimeoutRef.current);
+    }
+  };
+
+  // Start timeout when menu opens
+  useEffect(() => {
+    if (showSpeedMenu) {
+      startSpeedMenuTimeout();
+    } else {
+      clearSpeedMenuTimeout();
+    }
+    return () => clearSpeedMenuTimeout();
+  }, [showSpeedMenu]);
 
   // Format time helper
   const formatTime = (seconds: number) => {
@@ -400,6 +431,8 @@ export function CustomVideoPlayer({
               <div className="relative">
                 <button
                   onClick={() => setShowSpeedMenu(!showSpeedMenu)}
+                  onMouseEnter={clearSpeedMenuTimeout}
+                  onMouseLeave={startSpeedMenuTimeout}
                   className="btn-icon text-xs font-semibold min-w-[2.5rem]"
                   aria-label="Playback speed"
                 >
@@ -408,7 +441,11 @@ export function CustomVideoPlayer({
 
                 {/* Speed Menu */}
                 {showSpeedMenu && (
-                  <div className="absolute bottom-full right-0 mb-2 bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] rounded-[var(--radius-2xl)] border border-[var(--glass-border)] shadow-[var(--shadow-md)] p-2 min-w-[5rem]">
+                  <div 
+                    className="absolute bottom-full right-0 mb-2 bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] rounded-[var(--radius-2xl)] border border-[var(--glass-border)] shadow-[var(--shadow-md)] p-2 min-w-[5rem]"
+                    onMouseEnter={clearSpeedMenuTimeout}
+                    onMouseLeave={() => setShowSpeedMenu(false)}
+                  >
                     {speeds.map((speed) => (
                       <button
                         key={speed}

@@ -87,9 +87,17 @@ function PlayerContent() {
         setVideoData(data.data);
         setLoading(false);
         if (data.data.episodes && data.data.episodes.length > 0) {
-          const firstUrl = data.data.episodes[0].url;
-          console.log('Setting initial play URL:', firstUrl);
-          setPlayUrl(firstUrl);
+          // Check if there's an episode parameter in URL
+          const episodeParam = searchParams.get('episode');
+          const episodeIndex = episodeParam ? parseInt(episodeParam, 10) : 0;
+          
+          // Validate episode index
+          const validIndex = (episodeIndex >= 0 && episodeIndex < data.data.episodes.length) ? episodeIndex : 0;
+          
+          const episodeUrl = data.data.episodes[validIndex].url;
+          console.log('Setting play URL for episode', validIndex, ':', episodeUrl);
+          setCurrentEpisode(validIndex);
+          setPlayUrl(episodeUrl);
           setIsVideoLoading(true);
         } else {
           console.warn('No episodes found in video data');
@@ -110,6 +118,11 @@ function PlayerContent() {
     setPlayUrl(episode.url);
     setVideoError(''); // Clear any previous errors
     setIsVideoLoading(true);
+    
+    // Update URL to reflect current episode
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('episode', index.toString());
+    router.replace(`/player?${params.toString()}`, { scroll: false });
   };
 
   const handleVideoError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {

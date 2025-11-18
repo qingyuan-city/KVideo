@@ -25,16 +25,6 @@ interface HistoryStore {
     episodes?: Episode[]
   ) => void;
   
-  updateProgress: (
-    videoId: string | number,
-    source: string,
-    episodeIndex: number,
-    position: number,
-    duration: number
-  ) => void;
-  
-  getHistory: () => VideoHistoryItem[];
-  getHistoryItem: (videoId: string | number, source: string) => VideoHistoryItem | undefined;
   removeFromHistory: (videoId: string | number, source: string) => void;
   clearHistory: () => void;
 }
@@ -119,35 +109,6 @@ export const useHistoryStore = create<HistoryStore>()(
 
           return { viewingHistory: newHistory };
         });
-      },
-
-      updateProgress: (videoId, source, episodeIndex, position, duration) => {
-        set((state) => {
-          const newHistory = state.viewingHistory.map((item) => {
-            if (item.videoId === videoId && item.source === source) {
-              return {
-                ...item,
-                episodeIndex,
-                playbackPosition: position,
-                duration,
-                timestamp: Date.now(),
-              };
-            }
-            return item;
-          });
-
-          return { viewingHistory: newHistory };
-        });
-      },
-
-      getHistory: () => {
-        return get().viewingHistory;
-      },
-
-      getHistoryItem: (videoId, source) => {
-        return get().viewingHistory.find(
-          (item) => item.videoId === videoId && item.source === source
-        );
       },
 
       removeFromHistory: (videoId, source) => {

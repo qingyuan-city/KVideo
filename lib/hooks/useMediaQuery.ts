@@ -2,6 +2,9 @@
  * useMediaQuery Hook
  * 媒体查询 Hook - 监听浏览器媒体查询状态变化
  * 
+ * Note: Ready-to-use utility hook for responsive features.
+ * Currently not in active use but available for future enhancements.
+ * 
  * 遵循 Liquid Glass 设计系统原则：
  * - 响应式设计优先
  * - 性能优化（使用 matchMedia API）

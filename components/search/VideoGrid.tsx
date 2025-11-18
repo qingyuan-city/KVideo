@@ -122,13 +122,12 @@ export function VideoGrid({ videos, className = '' }: VideoGridProps) {
               }`}
             >
               {/* Poster */}
-              <div className="relative aspect-[2/3] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden" style={{ borderRadius: 'var(--radius-2xl)' }}>
+              <div className="relative aspect-[2/3] bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden rounded-[var(--radius-2xl)]">
                 {video.vod_pic ? (
                   <img
                     src={video.vod_pic}
                     alt={video.vod_name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 will-change-transform"
-                    style={{ borderRadius: 'var(--radius-2xl)' }}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 will-change-transform rounded-[var(--radius-2xl)]"
                     loading="lazy"
                     onError={(e) => {
                       e.currentTarget.src = '/placeholder-poster.svg';

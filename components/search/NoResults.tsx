@@ -11,8 +11,7 @@ export function NoResults({ onReset }: NoResultsProps) {
   return (
     <div className="text-center py-20 animate-fade-in">
       <div 
-        className="inline-flex items-center justify-center w-32 h-32 bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] mb-6" 
-        style={{ borderRadius: 'var(--radius-full)' }}
+        className="inline-flex items-center justify-center w-32 h-32 bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] mb-6 rounded-[var(--radius-full)]" 
       >
         <Icons.Search size={64} className="text-[var(--text-color-secondary)]" />
       </div>

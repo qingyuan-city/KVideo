@@ -793,12 +793,12 @@ export const announceToScreenReader = (message: string) => {
 ### 🔵 Low Priority (低优先级，时间允许时完成)
 
 #### 13. **统一圆角使用方式** (预计 1 小时)
-- [ ] 全局搜索 `style={{ borderRadius: 'var(--radius-` 
-- [ ] 统一改为 `className="rounded-[var(--radius-2xl)]"`
-- [ ] 或者相反，全部统一使用 `style`
+- [✅] 全局搜索 `style={{ borderRadius: 'var(--radius-` 
+- [✅] 统一改为 `className="rounded-[var(--radius-2xl)]"`
+- [✅] 或者相反，全部统一使用 `style`
 
 #### 14. **添加暗色模式动画过渡** (预计 1 小时)
-- [ ] 在 `ThemeProvider.tsx` 中添加 View Transition API
+- [✅] 在 `ThemeProvider.tsx` 中添加 View Transition API
   ```tsx
   if (document.startViewTransition) {
     document.startViewTransition(() => {
@@ -824,13 +824,7 @@ export const announceToScreenReader = (message: string) => {
   ```
 - [ ] 更新文档
 
-#### 17. **添加组件使用文档** (预计 4 小时)
-- [ ] 创建 `docs/COMPONENTS.md`
-- [ ] 为每个组件编写使用示例
-- [ ] 添加 Props API 文档
-- [ ] 添加可访问性指南
-
-#### 18. **创建 Storybook** (预计 8 小时)
+#### 17. **创建 Storybook** (预计 8 小时)
 - [ ] 安装 Storybook 7.x
 - [ ] 为所有 UI 组件创建 stories
 - [ ] 添加 A11y addon

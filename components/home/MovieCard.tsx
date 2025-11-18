@@ -32,13 +32,12 @@ export function MovieCard({ movie, onMovieClick }: MovieCardProps) {
       className="group cursor-pointer"
     >
       <Card hover className="overflow-hidden p-0 h-full">
-        <div className="relative aspect-[2/3] overflow-hidden bg-[var(--glass-bg)]" style={{ borderRadius: 'var(--radius-2xl)' }}>
+        <div className="relative aspect-[2/3] overflow-hidden bg-[var(--glass-bg)] rounded-[var(--radius-2xl)]">
           <Image
             src={movie.cover}
             alt={movie.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110 will-change-transform"
-            style={{ borderRadius: 'var(--radius-2xl)' }}
+            className="object-cover transition-transform duration-500 group-hover:scale-110 will-change-transform rounded-[var(--radius-2xl)]"
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
@@ -55,8 +54,7 @@ export function MovieCard({ movie, onMovieClick }: MovieCardProps) {
           />
           {movie.rate && parseFloat(movie.rate) > 0 && (
             <div 
-              className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm px-2.5 py-1.5 flex items-center gap-1.5"
-              style={{ borderRadius: 'var(--radius-full)' }}
+              className="absolute top-2 right-2 bg-black/70 backdrop-blur-sm px-2.5 py-1.5 flex items-center gap-1.5 rounded-[var(--radius-full)]"
             >
               <Icons.Star size={12} className="text-yellow-400 fill-yellow-400" />
               <span className="text-xs font-bold text-white">

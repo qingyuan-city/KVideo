@@ -71,13 +71,11 @@ export function TagManager({
             onChange={(e) => onNewTagInputChange(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && onAddTag()}
             placeholder="添加自定义标签..."
-            className="flex-1 bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] text-[var(--text-color)] px-4 py-2 focus:outline-none focus:border-[var(--accent-color)] transition-colors"
-            style={{ borderRadius: 'var(--radius-2xl)' }}
+            className="flex-1 bg-[var(--glass-bg)] backdrop-blur-xl border border-[var(--glass-border)] text-[var(--text-color)] px-4 py-2 focus:outline-none focus:border-[var(--accent-color)] transition-colors rounded-[var(--radius-2xl)]"
           />
           <button
             onClick={onAddTag}
-            className="px-6 py-2 bg-[var(--accent-color)] text-white font-semibold hover:opacity-90 transition-opacity"
-            style={{ borderRadius: 'var(--radius-2xl)' }}
+            className="px-6 py-2 bg-[var(--accent-color)] text-white font-semibold hover:opacity-90 transition-opacity rounded-[var(--radius-2xl)]"
           >
             添加
           </button>
@@ -91,13 +89,12 @@ export function TagManager({
             <button
               onClick={() => onTagSelect(tag.id)}
               className={`
-                px-6 py-2.5 text-sm font-semibold transition-all whitespace-nowrap will-change-transform
+                px-6 py-2.5 text-sm font-semibold transition-all whitespace-nowrap will-change-transform rounded-[var(--radius-full)]
                 ${selectedTag === tag.id
                   ? 'bg-[var(--accent-color)] text-white shadow-md scale-105'
                   : 'bg-[var(--glass-bg)] backdrop-blur-xl text-[var(--text-color)] border border-[var(--glass-border)] hover:border-[var(--accent-color)] hover:scale-105'
                 }
               `}
-              style={{ borderRadius: 'var(--radius-full)' }}
             >
               {tag.label}
             </button>
@@ -107,8 +104,7 @@ export function TagManager({
                   e.stopPropagation();
                   onTagDelete(tag.id);
                 }}
-                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors"
-                style={{ borderRadius: 'var(--radius-full)' }}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors rounded-[var(--radius-full)]"
               >
                 <Icons.X size={14} />
               </button>

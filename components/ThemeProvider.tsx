@@ -25,24 +25,42 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    const applyTheme = () => {
-      if (theme === 'system') {
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setActualTheme(systemPrefersDark ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', systemPrefersDark);
+    const applyTheme = (newTheme?: 'light' | 'dark') => {
+      const themeToApply = newTheme || (theme === 'system' 
+        ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+        : theme);
+      
+      setActualTheme(themeToApply);
+      document.documentElement.classList.toggle('dark', themeToApply === 'dark');
+    };
+
+    const applyThemeWithTransition = () => {
+      // Check if View Transition API is supported
+      // @ts-ignore - View Transition API is experimental
+      if (typeof document.startViewTransition === 'function') {
+        // @ts-ignore
+        document.startViewTransition(() => {
+          applyTheme();
+        });
       } else {
-        setActualTheme(theme);
-        document.documentElement.classList.toggle('dark', theme === 'dark');
+        // Fallback for browsers that don't support View Transition API
+        applyTheme();
       }
     };
 
-    applyTheme();
+    applyThemeWithTransition();
     localStorage.setItem('theme', theme);
 
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQuery.addEventListener('change', applyTheme);
-    return () => mediaQuery.removeEventListener('change', applyTheme);
+    const handleSystemThemeChange = () => {
+      if (theme === 'system') {
+        applyThemeWithTransition();
+      }
+    };
+    
+    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
   }, [theme]);
 
   return (

@@ -52,14 +52,12 @@ export function SearchLoadingAnimation({
       {/* Progress Bar - Unified 0-100% */}
       <div className="w-full">
         <div 
-          className="h-1 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden"
-          style={{ borderRadius: 'var(--radius-full)' }}
+          className="h-1 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden rounded-[var(--radius-full)]"
         >
           <div
-            className="h-full bg-[var(--accent-color)] transition-all duration-500 ease-out relative will-change-[width]"
+            className="h-full bg-[var(--accent-color)] transition-all duration-500 ease-out relative will-change-[width] rounded-[var(--radius-full)]"
             style={{ 
               width: `${progress}%`,
-              borderRadius: 'var(--radius-full)',
               transform: 'translateZ(0)'
             }}
           >

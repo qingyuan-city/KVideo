@@ -51,8 +51,8 @@ export function TypeBadgeItem({
           ? 'ring-2 ring-[var(--accent-color)] ring-offset-2' 
           : ''
         }
+        rounded-[var(--radius-full)]
       `}
-      style={{ borderRadius: 'var(--radius-full)' }}
     >
       <span>{type}</span>
       <span className={`

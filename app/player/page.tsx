@@ -70,7 +70,7 @@ function PlayerContent() {
     setCurrentEpisode(index);
     setPlayUrl(episode.url);
     setVideoError('');
-    
+
     // Update URL to reflect current episode
     const params = new URLSearchParams(searchParams.toString());
     params.set('episode', index.toString());
@@ -81,24 +81,24 @@ function PlayerContent() {
     <div className="min-h-screen bg-[var(--bg-color)]">
       {/* Glass Navbar */}
       <nav className="sticky top-0 z-50 pt-4 pb-2 px-4" style={{ transform: 'translateZ(0)' }}>
-        <div className="max-w-7xl mx-auto bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[0_4px_12px_color-mix(in_srgb,var(--shadow-color)_40%,transparent)] px-4 sm:px-6 py-4">
+        <div className="max-w-7xl mx-auto bg-[var(--glass-bg)] border border-[var(--glass-border)] rounded-[var(--radius-2xl)] shadow-[var(--shadow-sm)] px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-              <button 
+              <button
                 onClick={() => router.push('/')}
                 className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0"
                 title="返回首页"
               >
-                <Image 
-                  src="/icon.png" 
-                  alt="KVideo" 
-                  width={40} 
+                <Image
+                  src="/icon.png"
+                  alt="KVideo"
+                  width={40}
                   height={40}
                   className="object-contain"
                 />
               </button>
-              <Button 
-                variant="secondary" 
+              <Button
+                variant="secondary"
                 onClick={() => router.back()}
                 className="flex items-center gap-2"
               >
@@ -120,10 +120,10 @@ function PlayerContent() {
             <p className="text-[var(--text-color-secondary)]">正在加载视频详情...</p>
           </div>
         ) : videoError && !videoData ? (
-          <PlayerError 
-            error={videoError} 
-            onBack={() => router.back()} 
-            onRetry={fetchVideoDetails} 
+          <PlayerError
+            error={videoError}
+            onBack={() => router.back()}
+            onRetry={fetchVideoDetails}
           />
         ) : (
           <div className="grid lg:grid-cols-3 gap-6">
@@ -135,10 +135,10 @@ function PlayerContent() {
                 currentEpisode={currentEpisode}
                 onBack={() => router.back()}
               />
-              <VideoMetadata 
-                videoData={videoData} 
-                source={source} 
-                title={title} 
+              <VideoMetadata
+                videoData={videoData}
+                source={source}
+                title={title}
               />
             </div>
 

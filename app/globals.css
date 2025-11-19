@@ -4,34 +4,34 @@
 :root {
   --font-family-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
 
-  /* Light Mode Palette */
-  --bg-color-light: #f0f2f5;
-  --bg-image-light: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  /* Light Mode Palette - Optimized for Performance */
+  --bg-color-light: #f2f4f7;
+  /* Removed complex gradient for solid color or very simple gradient */
+  --bg-image-light: none;
   --text-color-light: #1d1d1f;
   --text-color-secondary-light: #6e6e73;
   --accent-color-light: #0056b3;
-  /* Updated from #007aff for WCAG AA compliance (6.85:1 with white) */
-  --glass-bg-light: rgba(242, 242, 247, 0.8);
-  --glass-border-light: rgba(255, 255, 255, 0.5);
-  --shadow-color-light: rgba(0, 0, 0, 0.1);
+  /* Increased opacity to replace blur effect */
+  --glass-bg-light: rgba(255, 255, 255, 0.95);
+  --glass-border-light: rgba(0, 0, 0, 0.05);
+  --shadow-color-light: rgba(0, 0, 0, 0.05);
 
   /* Dark Mode Palette */
   --bg-color-dark: #121212;
-  --bg-image-dark: linear-gradient(120deg, #272B30 0%, #121212 100%);
+  --bg-image-dark: linear-gradient(120deg, #1a1a1a 0%, #121212 100%);
   --text-color-dark: #f5f5f7;
   --text-color-secondary-dark: #8e8e93;
   --accent-color-dark: #1A6DBF;
-  /* Updated for WCAG AA compliance (5.27:1 with white) */
-  --glass-bg-dark: rgba(28, 28, 30, 0.75);
-  --glass-border-dark: rgba(60, 60, 60, 0.7);
+  --glass-bg-dark: rgba(30, 30, 30, 0.9);
+  --glass-border-dark: rgba(255, 255, 255, 0.1);
   --shadow-color-dark: rgba(0, 0, 0, 0.3);
 
   /* Universal Variables */
   --radius-2xl: 1.5rem;
   --radius-full: 9999px;
-  --shadow-sm: 0 2px 4px var(--shadow-color);
-  --shadow-md: 0 4px 12px var(--shadow-color);
-  --transition-fluid: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --shadow-sm: 0 1px 2px var(--shadow-color);
+  --shadow-md: 0 4px 6px var(--shadow-color);
+  --transition-fluid: 0.3s ease;
 
   /* Active Theme Variables */
   --bg-color: var(--bg-color-light);
@@ -43,7 +43,7 @@
   --glass-border: var(--glass-border-light);
   --shadow-color: var(--shadow-color-light);
 
-  --background: #f0f2f5;
+  --background: #f2f4f7;
   --foreground: #1d1d1f;
 }
 
@@ -346,25 +346,25 @@ select:focus-visible {
   animation: gradient-x 3s ease infinite;
 }
 
-/* Liquid Glass Components */
+/* Liquid Glass Components - OPTIMIZED */
 .glass-card {
-  /* background: var(--glass-bg); */
-  /* Performance fix: Use solid color with opacity instead of blur */
   background: var(--bg-color);
-  opacity: 0.95;
-
-  /* backdrop-filter: blur(8px) saturate(120%); */
-  /* -webkit-backdrop-filter: blur(8px) saturate(120%); */
+  opacity: 1;
+  /* Removed backdrop-filter */
 
   border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   border: 1px solid var(--glass-border);
-  transition: transform 0.2s ease-out;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .glass-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--shadow-color);
+  box-shadow: var(--shadow-md);
 }
 
 /* Optimize fixed/sticky elements for scrolling */
@@ -373,13 +373,12 @@ nav:where(.sticky, .fixed),
 .fixed {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 .glass-input {
   background: var(--glass-bg);
-  /* Performance fix: Disable blur */
-  /* backdrop-filter: blur(6px) saturate(120%); */
-  /* -webkit-backdrop-filter: blur(6px) saturate(120%); */
+  /* Removed backdrop-filter */
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-2xl);
   color: var(--text-color);
@@ -407,7 +406,7 @@ nav:where(.sticky, .fixed),
 .glass-button:hover {
   transform: translateY(-2px);
   filter: brightness(1.1);
-  box-shadow: 0 4px 8px var(--shadow-color);
+  box-shadow: var(--shadow-md);
 }
 
 .glass-button:active {
@@ -477,7 +476,7 @@ nav:where(.sticky, .fixed),
   min-width: 2.5rem;
   height: 2.5rem;
   background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
+  /* Removed backdrop-filter */
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-2xl);
   color: white;
@@ -612,6 +611,8 @@ nav:where(.sticky, .fixed),
 /* Reduce paint complexity on scroll */
 img {
   content-visibility: auto;
+  /* Hardware acceleration for images */
+  transform: translateZ(0);
 }
 
 /* Disable pointer events during scroll for better performance */
@@ -635,19 +636,18 @@ nav {
 }
 
 /* ===========================================
-   SEARCH HISTORY DROPDOWN - LIQUID GLASS
+   SEARCH HISTORY DROPDOWN - OPTIMIZED
    =========================================== */
 
-/* Search History Dropdown - Absolute positioning under search bar, Liquid Glass effect */
+/* Search History Dropdown - Absolute positioning under search bar */
 .search-history-dropdown {
-  /* Removed position: fixed - now using absolute from component */
   max-height: 400px;
   overflow-y: auto;
 
-  /* Liquid Glass effect - Core aesthetic */
-  background: var(--glass-bg);
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  /* Optimized: High opacity background instead of blur */
+  background: var(--bg-color);
+  opacity: 0.98;
+  /* Removed backdrop-filter */
 
   /* Rounded-2xl corners - Universal softness */
   border-radius: var(--radius-2xl);
@@ -662,7 +662,7 @@ nav {
   /* Smooth appearance animation */
   opacity: 0;
   transform: translateY(-10px) scale(0.95);
-  animation: search-dropdown-appear 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: search-dropdown-appear 0.2s ease-out forwards;
 
   /* Transform origin for natural scaling */
   transform-origin: top center;
@@ -670,6 +670,9 @@ nav {
   /* Prevent text selection during interaction */
   user-select: none;
   -webkit-user-select: none;
+
+  /* Hardware acceleration */
+  will-change: transform, opacity;
 }
 
 @keyframes search-dropdown-appear {
@@ -722,7 +725,7 @@ nav {
   cursor: pointer;
 
   /* Fluid animation - Physics-based transitions */
-  transition: all var(--transition-fluid);
+  transition: background-color 0.2s ease;
 
   /* Subtle background for hover/highlight */
   background: transparent;
@@ -731,13 +734,11 @@ nav {
 /* Hover state - Light interaction */
 .search-history-item:hover {
   background: color-mix(in srgb, var(--accent-color) 10%, transparent);
-  transform: translateX(2px);
 }
 
 /* Highlighted state - Keyboard navigation */
 .search-history-item.highlighted {
   background: color-mix(in srgb, var(--accent-color) 15%, transparent);
-  transform: translateX(4px);
 
   /* Subtle inner-glow effect - Lensing principle */
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent-color) 30%, transparent);
@@ -762,7 +763,7 @@ nav {
   flex-shrink: 0;
 
   /* Fluid animation */
-  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: all 0.2s ease;
 
   /* Prevent triggering parent hover */
   z-index: 1;
@@ -798,63 +799,3 @@ nav {
   background: color-mix(in srgb, var(--glass-bg) 80%, transparent);
   border-radius: var(--radius-full);
 }
-
-.search-history-dropdown::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--accent-color) 50%, transparent);
-}
-
-/* Empty state styling */
-.search-history-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-/* Accessibility - Focus visible states */
-.search-history-item:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 2px;
-}
-
-.search-history-remove:focus-visible {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 1px;
-  border-radius: var(--radius-full);
-}
-
-/* Mobile optimizations */
-@media (max-width: 640px) {
-  .search-history-dropdown {
-    /* Increase touch target sizes */
-    padding: 0.5rem;
-  }
-
-  .search-history-item {
-    padding: 1rem 0.75rem;
-    /* Larger minimum touch target */
-    min-height: 48px;
-  }
-
-  .search-history-remove {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-/* Dark mode enhancements */
-body.dark .search-history-dropdown,
-.dark .search-history-dropdown {
-  /* Enhanced glass effect in dark mode */
-  backdrop-filter: blur(30px) saturate(200%);
-  -webkit-backdrop-filter: blur(30px) saturate(200%);
-
-  /* Stronger shadow for depth */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-/* ===========================================
-   END SEARCH HISTORY DROPDOWN
-   =========================================== */

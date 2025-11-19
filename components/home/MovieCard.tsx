@@ -31,6 +31,10 @@ export const MovieCard = memo(function MovieCard({ movie, onMovieClick }: MovieC
         onMovieClick(movie);
       }}
       className="group cursor-pointer"
+      style={{
+        contain: 'layout style paint',
+        contentVisibility: 'auto'
+      }}
     >
       <Card hover className="overflow-hidden p-0 h-full" blur={false}>
         <div className="relative aspect-[2/3] overflow-hidden bg-[var(--glass-bg)] rounded-[var(--radius-2xl)]">

@@ -4,9 +4,9 @@
 
 import type { VideoSource } from '@/lib/types';
 
-export type SortOption = 
+export type SortOption =
   | 'default'
-  | 'relevance' 
+  | 'relevance'
   | 'latency-asc'
   | 'date-desc'
   | 'date-asc'
@@ -102,7 +102,14 @@ export const settingsStore = {
     }
 
     try {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      // Validate that parsed data has all required properties
+      return {
+        sources: Array.isArray(parsed.sources) ? parsed.sources : getDefaultSources(),
+        sortBy: parsed.sortBy || 'default',
+        searchHistory: parsed.searchHistory !== undefined ? parsed.searchHistory : true,
+        watchHistory: parsed.watchHistory !== undefined ? parsed.watchHistory : true,
+      };
     } catch {
       return {
         sources: getDefaultSources(),
@@ -128,7 +135,7 @@ export const settingsStore = {
     if (includeHistory && typeof window !== 'undefined') {
       const searchHistory = localStorage.getItem(SEARCH_HISTORY_KEY);
       const watchHistory = localStorage.getItem(WATCH_HISTORY_KEY);
-      
+
       if (searchHistory) exportData.searchHistory = JSON.parse(searchHistory);
       if (watchHistory) exportData.watchHistory = JSON.parse(watchHistory);
     }
@@ -139,19 +146,19 @@ export const settingsStore = {
   importSettings(jsonString: string): boolean {
     try {
       const data = JSON.parse(jsonString);
-      
+
       if (data.settings) {
         this.saveSettings(data.settings);
       }
-      
+
       if (data.searchHistory && typeof window !== 'undefined') {
         localStorage.setItem(SEARCH_HISTORY_KEY, JSON.stringify(data.searchHistory));
       }
-      
+
       if (data.watchHistory && typeof window !== 'undefined') {
         localStorage.setItem(WATCH_HISTORY_KEY, JSON.stringify(data.watchHistory));
       }
-      
+
       return true;
     } catch {
       return false;
@@ -163,12 +170,12 @@ export const settingsStore = {
       localStorage.removeItem(SETTINGS_KEY);
       localStorage.removeItem(SEARCH_HISTORY_KEY);
       localStorage.removeItem(WATCH_HISTORY_KEY);
-      
+
       // Clear all cookies
       document.cookie.split(";").forEach((c) => {
         document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
       });
-      
+
       // Clear cache if available
       if ('caches' in window) {
         caches.keys().then((names) => {

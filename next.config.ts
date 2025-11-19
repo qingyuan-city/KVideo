@@ -4,12 +4,12 @@ const nextConfig: NextConfig = {
   // Performance optimizations
   reactStrictMode: true,
   poweredByHeader: false,
-  
+
   // Compiler optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  
+
   images: {
     remotePatterns: [
       // Douban images
@@ -85,6 +85,14 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '**.xyz',
+      },
+      {
+        protocol: 'http',
+        hostname: '**.online',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.online',
       },
     ],
     // Add image optimization for better performance

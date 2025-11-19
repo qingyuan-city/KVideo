@@ -105,7 +105,7 @@ function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Glass Navbar */}
-      <nav className="sticky top-0 z-50 pt-4 pb-2" style={{
+      <nav className="sticky top-0 z-[2000] pt-4 pb-2" style={{
         transform: 'translate3d(0, 0, 0)',
         willChange: 'transform'
       }}>

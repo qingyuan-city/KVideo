@@ -8,9 +8,9 @@ interface BadgeProps {
   iconPosition?: 'left' | 'right';
 }
 
-const BadgeComponent = memo(function Badge({ 
-  children, 
-  variant = 'primary', 
+const BadgeComponent = memo(function Badge({
+  children,
+  variant = 'primary',
   className = '',
   icon,
   iconPosition = 'left'
@@ -21,12 +21,11 @@ const BadgeComponent = memo(function Badge({
   };
 
   const iconElement = icon && (
-    <span 
-      className={`inline-flex items-center justify-center ${
-        iconPosition === 'left' ? 'mr-1' : 'ml-1'
-      }`}
-      style={{ 
-        width: '0.875em', 
+    <span
+      className={`inline-flex items-center justify-center ${iconPosition === 'left' ? 'mr-1' : 'ml-1'
+        }`}
+      style={{
+        width: '0.875em',
         height: '0.875em',
         transform: 'translateZ(0)',
         willChange: 'auto',
@@ -37,7 +36,7 @@ const BadgeComponent = memo(function Badge({
   );
 
   return (
-    <span 
+    <span
       className={`
         inline-flex items-center justify-center
         px-1.5 py-0.5
@@ -60,5 +59,5 @@ const BadgeComponent = memo(function Badge({
 
 // Export both named and default for compatibility
 export const Badge = BadgeComponent;
-export { BadgeComponent as default };
+
 

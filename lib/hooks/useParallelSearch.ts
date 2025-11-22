@@ -7,7 +7,7 @@ import type { Video, SourceBadge } from '@/lib/types';
 import { useSearchState } from './useSearchState';
 import { useSearchAction } from './useSearchAction';
 
-export interface ParallelSearchResult {
+interface ParallelSearchResult {
   loading: boolean;
   results: Video[];
   availableSources: SourceBadge[];

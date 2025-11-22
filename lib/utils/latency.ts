@@ -3,7 +3,7 @@
  * Following Liquid Glass design system principles
  */
 
-export interface LatencyInfo {
+interface LatencyInfo {
   value: number;
   label: string;
   color: string;
@@ -41,13 +41,13 @@ export function getLatencyInfo(latency: number): LatencyInfo {
   };
 }
 
+
+
 /**
  * Format latency for display
  * @param latency - Response time in milliseconds
  * @returns Formatted string in milliseconds (e.g., "345ms", "1240ms")
  */
-export function formatLatency(latency: number): string {
+function formatLatency(latency: number): string {
   return `${latency}ms`;
 }
-
-

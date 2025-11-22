@@ -35,7 +35,7 @@ export async function processSearchStream({
 
         timeoutId = setTimeout(() => {
             if (!isCompleted) {
-                console.log('Search timeout: No progress for 3 seconds, auto-completing');
+
                 isCompleted = true;
                 onComplete();
             }

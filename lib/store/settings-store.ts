@@ -15,7 +15,7 @@ export type SortOption =
   | 'name-asc'
   | 'name-desc';
 
-export interface AppSettings {
+interface AppSettings {
   sources: VideoSource[];
   sortBy: SortOption;
   searchHistory: boolean;

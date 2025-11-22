@@ -4,11 +4,10 @@ import type {
     ApiSearchResponse,
 } from '@/lib/types';
 import { fetchWithTimeout, withRetry } from './http-utils';
-
 /**
  * Search videos from a single source
  */
-export async function searchVideosBySource(
+async function searchVideosBySource(
     query: string,
     source: VideoSource,
     page: number = 1
@@ -63,6 +62,7 @@ export async function searchVideosBySource(
         };
     }
 }
+
 
 /**
  * Search videos from multiple sources in parallel

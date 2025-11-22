@@ -3,7 +3,7 @@
  * Handles parallel requests and data normalization
  */
 
-export { searchVideos, searchVideosBySource } from './search-api';
+export { searchVideos } from './search-api';
 export { getVideoDetail } from './detail-api';
 
 

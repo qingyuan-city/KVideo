@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-export interface VideoData {
+interface VideoData {
   vod_id: string;
   vod_name: string;
   vod_pic?: string;
@@ -15,7 +15,7 @@ export interface VideoData {
   episodes?: Array<{ name?: string; url: string }>;
 }
 
-export interface UseVideoPlayerReturn {
+interface UseVideoPlayerReturn {
   videoData: VideoData | null;
   loading: boolean;
   videoError: string;
@@ -26,6 +26,8 @@ export interface UseVideoPlayerReturn {
   setVideoError: (error: string) => void;
   fetchVideoDetails: () => Promise<void>;
 }
+
+
 
 export function useVideoPlayer(
   videoId: string | null,

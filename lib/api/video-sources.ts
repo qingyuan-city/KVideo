@@ -13,5 +13,4 @@ export function getSourceById(id: string): VideoSource | undefined {
   return DEFAULT_SOURCES.find(source => source.id === id);
 }
 
-// Re-export DEFAULT_SOURCES for backward compatibility
-export { DEFAULT_SOURCES };
+

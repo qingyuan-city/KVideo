@@ -39,6 +39,7 @@ export function useHistoryDownloader() {
                         segments,
                         startIndex: 0,
                         signal: controller.signal,
+                        videoUrl: url, // Track metadata for this video
                         onProgress: (current, total) => {
                             if (current % 50 === 0) {
                                 console.log(`[HistoryDownloader] ${item.title}: ${current}/${total}`);

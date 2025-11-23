@@ -21,32 +21,47 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // Intercept .ts file requests
+    // Intercept HLS manifest files (.m3u8)
+    if (url.pathname.endsWith('.m3u8')) {
+        event.respondWith(
+            caches.open(CACHE_NAME).then((cache) => {
+                return cache.match(event.request, { ignoreSearch: true }).then((response) => {
+                    // Always fetch fresh manifest but return cached while fetching
+                    const fetchPromise = fetch(event.request).then((networkResponse) => {
+                        if (networkResponse && networkResponse.status === 200) {
+                            cache.put(event.request, networkResponse.clone());
+                        }
+                        return networkResponse;
+                    }).catch(() => response); // Fallback to cache on network error
+
+                    // Return cache immediately if available, otherwise wait for network
+                    return response || fetchPromise;
+                });
+            })
+        );
+    }
+
+    // Intercept video segment files (.ts)
     if (url.pathname.endsWith('.ts')) {
         event.respondWith(
-            caches.match(event.request, { ignoreSearch: true }).then((response) => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-
-                // Clone the request because it's a stream and can only be consumed once
-                const fetchRequest = event.request.clone();
-
-                return fetch(fetchRequest).then((response) => {
-                    // Check if we received a valid response
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
+            caches.open(CACHE_NAME).then((cache) => {
+                return cache.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
+                    // Cache hit - return immediately for instant playback
+                    if (cachedResponse) {
+                        return cachedResponse;
                     }
 
-                    // Clone the response because it's a stream
-                    const responseToCache = response.clone();
-
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseToCache);
+                    // Cache miss - fetch from network
+                    return fetch(event.request).then((response) => {
+                        // Only cache valid responses
+                        if (response && response.status === 200) {
+                            cache.put(event.request, response.clone());
+                        }
+                        return response;
+                    }).catch((error) => {
+                        console.error('[SW] Failed to fetch segment:', error);
+                        throw error;
                     });
-
-                    return response;
                 });
             })
         );

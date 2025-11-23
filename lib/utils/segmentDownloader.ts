@@ -4,12 +4,14 @@
  */
 
 import type { Segment } from './hlsManifestParser';
+import { cacheManager } from './cacheManager';
 
 interface DownloadQueueOptions {
     segments: Segment[];
     startIndex: number;
     signal: AbortSignal;
     onProgress?: (current: number, total: number) => void;
+    videoUrl?: string; // The m3u8 URL for metadata tracking
 }
 
 const CONCURRENCY = 1000;
@@ -17,7 +19,7 @@ const TIMEOUT_MS = 15000;
 const CACHE_NAME = 'video-cache-v1';
 
 export async function downloadSegmentQueue(options: DownloadQueueOptions): Promise<void> {
-    const { segments, startIndex, signal, onProgress } = options;
+    const { segments, startIndex, signal, onProgress, videoUrl } = options;
 
     if (!('caches' in window)) return;
 
@@ -38,18 +40,37 @@ export async function downloadSegmentQueue(options: DownloadQueueOptions): Promi
         const fetchSignal = anySignal([signal, timeoutController.signal]);
 
         try {
+            // Check if cache exists AND is valid (not expired)
             const match = await cache.match(url, { ignoreSearch: true });
-            if (match) {
+            const isValid = match ? await cacheManager.isCacheValid(url) : false;
+
+            if (match && isValid) {
                 onProgress?.(currentIndex, segments.length);
-                console.log(`[Preloader] 已缓存，跳过: ${currentIndex}/${segments.length}`);
+                console.log(`[Preloader] 已缓存且有效: ${currentIndex}/${segments.length}`);
             } else {
+                // If cache exists but expired, delete it
+                if (match && !isValid) {
+                    await cache.delete(url);
+                }
+
                 console.log(`[Preloader] 正在下载片段 ${currentIndex}/${segments.length}`);
                 const response = await fetch(url, { signal: fetchSignal });
+
                 if (response.ok) {
                     try {
+                        const clonedResponse = response.clone();
                         await cache.put(url, response.clone());
+
+                        // Track metadata if videoUrl is provided
+                        if (videoUrl) {
+                            const blob = await clonedResponse.blob();
+                            await cacheManager.addCacheEntry(url, videoUrl, blob.size);
+                        }
+
                         onProgress?.(currentIndex, segments.length);
-                    } catch (e) { /* ignore quota errors */ }
+                    } catch (e) {
+                        console.warn('[Preloader] Cache quota error:', e);
+                    }
                 }
             }
         } catch (err) {

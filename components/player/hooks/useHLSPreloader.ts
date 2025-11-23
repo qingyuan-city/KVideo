@@ -91,7 +91,8 @@ export function useHLSPreloader({ src, currentTime }: UseHLSPreloaderProps) {
             downloadSegmentQueue({
                 segments: segmentsRef.current,
                 startIndex,
-                signal: abortControllerRef.current.signal
+                signal: abortControllerRef.current.signal,
+                videoUrl: src // Pass the m3u8 URL for metadata tracking
             });
         }, isInitializedRef.current ? 0 : 100); // 100ms debounce on initial load only
 

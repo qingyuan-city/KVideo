@@ -15,7 +15,7 @@ export function PlayerNavbar() {
                     <div className="flex items-center gap-2 sm:gap-4 min-w-0">
                         <button
                             onClick={() => router.push('/')}
-                            className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0"
+                            className="flex items-center justify-center hover:opacity-80 transition-opacity flex-shrink-0 cursor-pointer"
                             title="返回首页"
                         >
                             <Image
@@ -38,7 +38,7 @@ export function PlayerNavbar() {
                     <div className="flex items-center gap-3">
                         <Link
                             href="/settings"
-                            className="w-10 h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200"
+                            className="w-10 h-10 flex items-center justify-center rounded-[var(--radius-full)] bg-[var(--glass-bg)] border border-[var(--glass-border)] text-[var(--text-color)] hover:bg-[color-mix(in_srgb,var(--accent-color)_10%,transparent)] transition-all duration-200 cursor-pointer"
                             aria-label="设置"
                         >
                             <svg className="w-5 h-5" viewBox="0 -960 960 960" fill="currentColor">

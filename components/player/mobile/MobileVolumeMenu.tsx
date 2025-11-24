@@ -44,7 +44,7 @@ export function MobileVolumeMenu({
                     </span>
                     <button
                         onClick={onClose}
-                        className="text-white/60 hover:text-white text-xs"
+                        className="text-white/60 hover:text-white text-xs cursor-pointer"
                     >
                         关闭
                     </button>

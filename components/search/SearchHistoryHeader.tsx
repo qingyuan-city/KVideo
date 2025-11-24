@@ -23,7 +23,7 @@ export function SearchHistoryHeader({ onClearAll }: SearchHistoryHeaderProps) {
                     e.stopPropagation();
                     onClearAll();
                 }}
-                className="text-xs text-[var(--accent-color)] hover:underline transition-all"
+                className="text-xs text-[var(--accent-color)] hover:underline transition-all cursor-pointer"
                 aria-label="清除所有历史"
             >
                 清除全部

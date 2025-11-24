@@ -14,12 +14,12 @@ interface SourceBadgeItemProps {
   innerRef?: (el: HTMLButtonElement | null) => void;
 }
 
-export function SourceBadgeItem({ 
+export function SourceBadgeItem({
   id,
-  name, 
-  count, 
-  isSelected, 
-  onToggle, 
+  name,
+  count,
+  isSelected,
+  onToggle,
   isFocused = false,
   onFocus,
   innerRef,
@@ -51,9 +51,9 @@ export function SourceBadgeItem({
         transition-all duration-200 ease-out
         hover:scale-105 hover:shadow-[var(--shadow-sm)]
         active:scale-95 snap-start
-        focus:outline-none
-        ${isSelected 
-          ? 'bg-[var(--accent-color)] text-white border-[var(--accent-color)] shadow-md' 
+        focus:outline-none cursor-pointer
+        ${isSelected
+          ? 'bg-[var(--accent-color)] text-white border-[var(--accent-color)] shadow-md'
           : 'bg-[var(--glass-bg)] text-[var(--text-color)] border-[var(--glass-border)] hover:border-[var(--accent-color)]'
         }
       `}
@@ -61,8 +61,8 @@ export function SourceBadgeItem({
       <span>{name}</span>
       <span className={`
         px-2 py-0.5 rounded-full text-xs font-semibold
-        ${isSelected 
-          ? 'bg-white/20 text-white' 
+        ${isSelected
+          ? 'bg-white/20 text-white'
           : 'bg-[var(--accent-color)]/10 text-[var(--accent-color)]'
         }
       `}>

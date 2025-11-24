@@ -98,7 +98,7 @@ export function HistoryItem({
               e.stopPropagation();
               onRemove();
             }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-[var(--glass-bg)] rounded-full self-start"
+            className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-[var(--glass-bg)] rounded-full self-start cursor-pointer"
             aria-label="删除"
           >
             <Icons.Trash size={16} className="text-[var(--text-color-secondary)]" />

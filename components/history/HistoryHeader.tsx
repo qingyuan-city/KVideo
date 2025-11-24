@@ -18,7 +18,7 @@ export function HistoryHeader({ onClose }: HistoryHeaderProps) {
             </div>
             <button
                 onClick={onClose}
-                className="p-2 hover:bg-[var(--glass-bg)] rounded-full transition-colors"
+                className="p-2 hover:bg-[var(--glass-bg)] rounded-full transition-colors cursor-pointer"
                 aria-label="关闭"
             >
                 <Icons.X size={24} className="text-[var(--text-color-secondary)]" />

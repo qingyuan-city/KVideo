@@ -87,7 +87,7 @@ export function SearchBox({ onSearch, onClear, initialQuery = '' }: SearchBoxPro
                     <button
                         type="button"
                         onClick={handleClear}
-                        className="p-2 text-[var(--text-color)] opacity-70 hover:opacity-100 transition-opacity touch-manipulation"
+                        className="p-2 text-[var(--text-color)] opacity-70 hover:opacity-100 transition-opacity touch-manipulation cursor-pointer"
                         aria-label="清除搜索"
                     >
                         <Icons.X size={20} />

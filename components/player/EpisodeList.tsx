@@ -30,9 +30,9 @@ export function EpisodeList({ episodes, currentEpisode, onEpisodeClick }: Episod
     orientation: 'vertical',
     onNavigate: useCallback((index: number) => {
       buttonRefs.current[index]?.focus();
-      buttonRefs.current[index]?.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'nearest' 
+      buttonRefs.current[index]?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
       });
     }, []),
     onSelect: useCallback((index: number) => {
@@ -52,7 +52,7 @@ export function EpisodeList({ episodes, currentEpisode, onEpisodeClick }: Episod
         )}
       </h3>
 
-      <div 
+      <div
         ref={listRef}
         className="max-h-[400px] sm:max-h-[600px] overflow-y-auto space-y-2 pr-2"
         role="radiogroup"
@@ -76,7 +76,7 @@ export function EpisodeList({ episodes, currentEpisode, onEpisodeClick }: Episod
               aria-current={currentEpisode === index ? 'true' : undefined}
               aria-label={`${episode.name || `第 ${index + 1} 集`}${currentEpisode === index ? '，当前播放' : ''}`}
               className={`
-                w-full px-3 py-2 sm:px-4 sm:py-3 rounded-[var(--radius-2xl)] text-left transition-[var(--transition-fluid)]
+                w-full px-3 py-2 sm:px-4 sm:py-3 rounded-[var(--radius-2xl)] text-left transition-[var(--transition-fluid)] cursor-pointer
                 ${currentEpisode === index
                   ? 'bg-[var(--accent-color)] text-white shadow-[0_4px_12px_color-mix(in_srgb,var(--accent-color)_50%,transparent)] brightness-110'
                   : 'bg-[var(--glass-bg)] hover:bg-[var(--glass-hover)] text-[var(--text-color)] border border-[var(--glass-border)]'

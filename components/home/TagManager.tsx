@@ -46,7 +46,7 @@ export function TagManager({
       <div className="mb-6 flex items-center justify-between">
         <button
           onClick={onToggleManager}
-          className="text-sm text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] transition-colors flex items-center gap-2"
+          className="text-sm text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] transition-colors flex items-center gap-2 cursor-pointer"
         >
           <Icons.Tag size={16} />
           {showTagManager ? '完成' : '管理标签'}
@@ -54,7 +54,7 @@ export function TagManager({
         {showTagManager && (
           <button
             onClick={onRestoreDefaults}
-            className="text-sm text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] transition-colors flex items-center gap-2"
+            className="text-sm text-[var(--text-color-secondary)] hover:text-[var(--accent-color)] transition-colors flex items-center gap-2 cursor-pointer"
           >
             <Icons.RefreshCw size={16} />
             恢复默认
@@ -75,7 +75,7 @@ export function TagManager({
           />
           <button
             onClick={onAddTag}
-            className="px-6 py-2 bg-[var(--accent-color)] text-white font-semibold hover:opacity-90 transition-opacity rounded-[var(--radius-2xl)]"
+            className="px-6 py-2 bg-[var(--accent-color)] text-white font-semibold hover:opacity-90 transition-opacity rounded-[var(--radius-2xl)] cursor-pointer"
           >
             添加
           </button>
@@ -89,7 +89,7 @@ export function TagManager({
             <button
               onClick={() => onTagSelect(tag.id)}
               className={`
-                px-6 py-2.5 text-sm font-semibold transition-all whitespace-nowrap rounded-[var(--radius-full)]
+                px-6 py-2.5 text-sm font-semibold transition-all whitespace-nowrap rounded-[var(--radius-full)] cursor-pointer
                 ${selectedTag === tag.id
                   ? 'bg-[var(--accent-color)] text-white shadow-md scale-105'
                   : 'bg-[var(--glass-bg)] backdrop-blur-xl text-[var(--text-color)] border border-[var(--glass-border)] hover:border-[var(--accent-color)] hover:scale-105'
@@ -104,7 +104,7 @@ export function TagManager({
                   e.stopPropagation();
                   onTagDelete(tag.id);
                 }}
-                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors rounded-[var(--radius-full)]"
+                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-colors rounded-[var(--radius-full)] cursor-pointer"
               >
                 <Icons.X size={14} />
               </button>

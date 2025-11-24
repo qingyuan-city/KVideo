@@ -62,7 +62,7 @@ export function DesktopOverlay({
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <button
                         onClick={onTogglePlay}
-                        className="pointer-events-auto w-20 h-20 rounded-full bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] border border-[var(--glass-border)] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-[var(--accent-color)] shadow-[var(--shadow-md)] will-change-transform"
+                        className="pointer-events-auto w-20 h-20 rounded-full bg-[var(--glass-bg)] backdrop-blur-[25px] saturate-[180%] border border-[var(--glass-border)] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:bg-[var(--accent-color)] shadow-[var(--shadow-md)] will-change-transform cursor-pointer"
                         aria-label="Play"
                     >
                         <Icons.Play size={32} className="text-white ml-1" />

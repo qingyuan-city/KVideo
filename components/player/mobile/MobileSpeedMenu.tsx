@@ -30,7 +30,7 @@ export function MobileSpeedMenu({
                                 e.stopPropagation();
                                 onSpeedChange(speed);
                             }}
-                            className={`px-3 py-1.5 rounded-[var(--radius-full)] text-xs font-medium transition-colors ${playbackRate === speed
+                            className={`px-3 py-1.5 rounded-[var(--radius-full)] text-xs font-medium transition-colors cursor-pointer ${playbackRate === speed
                                 ? 'bg-[var(--accent-color)] text-white'
                                 : 'bg-white/20 text-white hover:bg-white/30'
                                 }`}
@@ -41,7 +41,7 @@ export function MobileSpeedMenu({
                 </div>
                 <button
                     onClick={onClose}
-                    className="text-white/60 hover:text-white text-xs mt-2"
+                    className="text-white/60 hover:text-white text-xs mt-2 cursor-pointer"
                 >
                     关闭
                 </button>
@@ -59,7 +59,7 @@ export function MobileSpeedMenu({
                             e.stopPropagation();
                             onSpeedChange(speed);
                         }}
-                        className={`px-3 py-1.5 rounded-[var(--radius-full)] text-xs font-medium transition-colors whitespace-nowrap ${playbackRate === speed
+                        className={`px-3 py-1.5 rounded-[var(--radius-full)] text-xs font-medium transition-colors whitespace-nowrap cursor-pointer ${playbackRate === speed
                             ? 'bg-[var(--accent-color)] text-white'
                             : 'bg-white/20 text-white hover:bg-white/30'
                             }`}

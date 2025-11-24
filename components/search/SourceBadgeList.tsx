@@ -103,7 +103,7 @@ export function SourceBadgeList({ sources, selectedSources, onToggleSource }: So
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="mt-2 text-xs text-[var(--text-color-secondary)] hover:text-[var(--accent-color)]
-                     flex items-center gap-1 transition-colors self-start"
+                     flex items-center gap-1 transition-colors self-start cursor-pointer"
           >
             <span>{isExpanded ? '收起' : '展开更多'}</span>
             <Icons.ChevronDown

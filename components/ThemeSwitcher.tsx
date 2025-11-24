@@ -14,8 +14,9 @@ export function ThemeSwitcher() {
           w-9 h-9
           rounded-[var(--radius-full)]
           transition-all duration-200
-          ${theme === 'light' 
-            ? 'bg-[var(--accent-color)] text-white scale-105' 
+          cursor-pointer
+          ${theme === 'light'
+            ? 'bg-[var(--accent-color)] text-white scale-105'
             : 'text-[var(--text-color-secondary)] hover:bg-[color-mix(in_srgb,var(--text-color)_10%,transparent)]'
           }
         `}
@@ -40,8 +41,9 @@ export function ThemeSwitcher() {
           w-9 h-9
           rounded-[var(--radius-full)]
           transition-all duration-200
-          ${theme === 'dark' 
-            ? 'bg-[var(--accent-color)] text-white scale-105' 
+          cursor-pointer
+          ${theme === 'dark'
+            ? 'bg-[var(--accent-color)] text-white scale-105'
             : 'text-[var(--text-color-secondary)] hover:bg-[color-mix(in_srgb,var(--text-color)_10%,transparent)]'
           }
         `}
@@ -58,8 +60,9 @@ export function ThemeSwitcher() {
           w-9 h-9
           rounded-[var(--radius-full)]
           transition-all duration-200
-          ${theme === 'system' 
-            ? 'bg-[var(--accent-color)] text-white scale-105' 
+          cursor-pointer
+          ${theme === 'system'
+            ? 'bg-[var(--accent-color)] text-white scale-105'
             : 'text-[var(--text-color-secondary)] hover:bg-[color-mix(in_srgb,var(--text-color)_10%,transparent)]'
           }
         `}

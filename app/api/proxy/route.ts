@@ -99,18 +99,30 @@ export async function GET(request: NextRequest) {
         }
 
         // For non-m3u8 content (segments, mp4, etc.), stream directly
-        const newResponse = new NextResponse(response.body, {
-            status: response.status,
-            statusText: response.statusText,
-            headers: new Headers(response.headers),
+        const headers = new Headers();
+        
+        // Copy headers but exclude problematic ones
+        response.headers.forEach((value, key) => {
+            const lowerKey = key.toLowerCase();
+            if (
+                lowerKey !== 'content-encoding' && 
+                lowerKey !== 'content-length' && 
+                lowerKey !== 'transfer-encoding'
+            ) {
+                headers.set(key, value);
+            }
         });
 
         // Add CORS headers to allow playback
-        newResponse.headers.set('Access-Control-Allow-Origin', '*');
-        newResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
-        newResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        headers.set('Access-Control-Allow-Origin', '*');
+        headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-        return newResponse;
+        return new NextResponse(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: headers,
+        });
     } catch (error) {
         console.error('Proxy error:', error);
         return new NextResponse(

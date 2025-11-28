@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
+
+// Disable SSL verification for video sources with invalid certificates
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export async function GET(request: NextRequest) {
     const url = request.nextUrl.searchParams.get('url');
@@ -100,13 +103,13 @@ export async function GET(request: NextRequest) {
 
         // For non-m3u8 content (segments, mp4, etc.), stream directly
         const headers = new Headers();
-        
+
         // Copy headers but exclude problematic ones
         response.headers.forEach((value, key) => {
             const lowerKey = key.toLowerCase();
             if (
-                lowerKey !== 'content-encoding' && 
-                lowerKey !== 'content-length' && 
+                lowerKey !== 'content-encoding' &&
+                lowerKey !== 'content-length' &&
                 lowerKey !== 'transfer-encoding'
             ) {
                 headers.set(key, value);

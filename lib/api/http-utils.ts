@@ -3,6 +3,9 @@
  * Handles timeouts and retries
  */
 
+// Disable SSL verification for video sources with invalid certificates
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 const REQUEST_TIMEOUT = 15000;
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 200;

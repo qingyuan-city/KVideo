@@ -11,10 +11,9 @@ interface SearchResultsProps {
     results: Video[];
     availableSources: SourceBadge[];
     loading: boolean;
-    openDirectLinks?: boolean;
 }
 
-export function SearchResults({ results, availableSources, loading, openDirectLinks = false }: SearchResultsProps) {
+export function SearchResults({ results, availableSources, loading }: SearchResultsProps) {
     // Source badges hook - filters by video source
     const {
         selectedSources,
@@ -62,7 +61,7 @@ export function SearchResults({ results, availableSources, loading, openDirectLi
             )}
 
             {/* Display filtered videos (both source and type filters applied) */}
-            <VideoGrid videos={finalFilteredVideos} openDirectLinks={openDirectLinks} />
+            <VideoGrid videos={finalFilteredVideos} />
         </div>
     );
 }

@@ -49,7 +49,6 @@ function SecretHomePage() {
                         results={results}
                         availableSources={availableSources}
                         loading={loading}
-                        openDirectLinks={true}
                     />
                 )}
 

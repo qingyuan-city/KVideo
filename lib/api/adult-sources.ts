@@ -63,5 +63,59 @@ export const ADULT_SOURCES: VideoSource[] = [
         detailPath: '',
         enabled: true,
         priority: 7
+    },
+    {
+        id: 'msnii',
+        name: '美少女资源站',
+        baseUrl: 'https://www.msnii.com/api/json.php',
+        searchPath: '',
+        detailPath: '',
+        enabled: true,
+        priority: 8
+    },
+    {
+        id: 'xrbsp',
+        name: '淫水机资源站',
+        baseUrl: 'https://www.xrbsp.com/api/json.php',
+        searchPath: '',
+        detailPath: '',
+        enabled: true,
+        priority: 9
+    },
+    {
+        id: 'gdlsp',
+        name: '香奶儿资源站',
+        baseUrl: 'https://www.gdlsp.com/api/json.php',
+        searchPath: '',
+        detailPath: '',
+        enabled: true,
+        priority: 10
+    },
+    {
+        id: 'kxgav',
+        name: '白嫖资源站',
+        baseUrl: 'https://www.kxgav.com/api/json.php',
+        searchPath: '',
+        detailPath: '',
+        enabled: true,
+        priority: 11
+    },
+    {
+        id: 'afasu',
+        name: '小湿妹资源站',
+        baseUrl: 'https://www.afasu.com/api/json.php',
+        searchPath: '',
+        detailPath: '',
+        enabled: true,
+        priority: 12
+    },
+    {
+        id: 'pgxdy',
+        name: '黄AV资源站',
+        baseUrl: 'https://www.pgxdy.com/api/json.php',
+        searchPath: '',
+        detailPath: '',
+        enabled: true,
+        priority: 13
     }
 ];

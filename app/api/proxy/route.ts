@@ -15,7 +15,16 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        const response = await fetchWithRetry({ url, request });
+        // Extract headers to forward (Cookies, Accept-Language, etc.)
+        const requestHeaders: Record<string, string> = {};
+        const forwardHeaders = ['cookie', 'accept', 'accept-language'];
+
+        forwardHeaders.forEach(key => {
+            const value = request.headers.get(key);
+            if (value) requestHeaders[key] = value;
+        });
+
+        const response = await fetchWithRetry({ url, request, headers: requestHeaders });
 
         const contentType = response.headers.get('Content-Type');
 
@@ -68,6 +77,7 @@ export async function GET(request: NextRequest) {
         headers.set('Access-Control-Allow-Origin', '*');
         headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
         headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
 
         return new NextResponse(response.body, {
             status: response.status,

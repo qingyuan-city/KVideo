@@ -3,9 +3,10 @@ import { NextRequest } from 'next/server';
 interface FetchWithRetryOptions {
     url: string;
     request: NextRequest;
+    headers?: Record<string, string>;
 }
 
-export async function fetchWithRetry({ url, request }: FetchWithRetryOptions): Promise<Response> {
+export async function fetchWithRetry({ url, request, headers = {} }: FetchWithRetryOptions): Promise<Response> {
     // User-Agent rotation for better compatibility
     const userAgents = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -20,10 +21,8 @@ export async function fetchWithRetry({ url, request }: FetchWithRetryOptions): P
     // Optional IP forwarding (default: Beijing IP)
     const forwardedIP = request.nextUrl.searchParams.get('ip') || '202.108.22.5';
 
-    // Vercel serverless functions have a 10s default timeout
-    const isVercel = process.env.VERCEL === '1';
-    const MAX_RETRIES = isVercel ? 2 : 5;
-    const TIMEOUT_MS = isVercel ? 8000 : 30000; // 8s for Vercel, 30s for others
+    const MAX_RETRIES = 5;
+    const TIMEOUT_MS = 30000; // 30 seconds
     let lastError: unknown = null;
     let response: Response | null = null;
 
@@ -44,6 +43,7 @@ export async function fetchWithRetry({ url, request }: FetchWithRetryOptions): P
                     'X-Forwarded-For': forwardedIP,
                     'Client-IP': forwardedIP,
                     'Referer': referer,
+                    ...headers, // Merge custom headers (Cookie, Accept, etc.)
                 },
                 signal: controller.signal,
             });

@@ -4,6 +4,8 @@
 
 > 一个基于 Next.js 16 构建的现代化视频聚合播放平台。采用独特的 "Liquid Glass" 设计语言，提供流畅的视觉体验和强大的视频搜索功能。
 
+**🌐 在线体验：[https://kvideo.vercel.app/](https://kvideo.vercel.app/)**
+
 [![Next.js](https://img.shields.io/badge/Next.js-16.0-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.2-blue?style=for-the-badge&logo=react)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
@@ -111,474 +113,122 @@
 - **Server Components**：优化首屏加载性能
 - **Client Components**：复杂交互和状态管理
 
-## 🚀 快速开始
+## 🚀 快速部署
 
-### 环境要求
+### 在线体验
 
-在开始之前，请确保你的开发环境满足以下要求：
+访问 **[https://kvideo.vercel.app/](https://kvideo.vercel.app/)** 立即体验，无需安装！
 
-| 工具 | 最低版本 | 推荐版本 |
-|------|----------|----------|
-| **Node.js** | 20.0.0 | 20.x LTS |
-| **npm** | 9.0.0 | 10.x |
-| **Git** | 2.30.0 | 最新版本 |
+### 部署到自己的服务器
 
-### 安装步骤
 
-#### 1. 克隆仓库
 
-```bash
-git clone https://github.com/KuekHaoYang/KVideo.git
-cd KVideo
-```
 
-#### 2. 安装依赖
 
-```bash
-npm install
-```
-
-如果你使用其他包管理器：
-
-```bash
-yarn install
-pnpm install
-```
-
-#### 3. 启动开发服务器
-
-```bash
-npm run dev
-```
-
-开发服务器将在 `http://localhost:3000` 启动。
-
-#### 4. 构建生产版本
-
-```bash
-npm run build
-npm start
-```
-
-
-
-## 📂 项目结构
-
-```
-KVideo/
-├── app/                          # Next.js App Router
-│   ├── api/                      # API 路由
-│   │   ├── douban/               # 豆瓣 API 代理
-│   │   │   └── route.ts          # 豆瓣数据获取端点
-│   │   ├── play/                 # 视频播放代理
-│   │   │   └── [...segments]/    # HLS 片段代理
-│   │   └── proxy/                # 通用代理端点
-│   ├── player/                   # 播放器页面
-│   │   └── page.tsx              # 视频播放页面
-│   ├── settings/                 # 设置页面
-│   │   └── page.tsx              # 应用设置界面
-│   ├── styles/                   # 全局样式
-│   │   ├── accordion.css         # 手风琴组件样式
-│   │   ├── badge.css             # 徽章组件样式
-│   │   ├── button.css            # 按钮组件样式
-│   │   ├── glass.css             # Liquid Glass 核心样式
-│   │   ├── input.css             # 输入框组件样式
-│   │   ├── modal.css             # 模态框组件样式
-│   │   └── tabs.css              # 标签页组件样式
-│   ├── globals.css               # 全局 CSS 入口
-│   ├── layout.tsx                # 根布局组件
-│   ├── page.tsx                  # 首页（搜索页面）
-│   └── scroll-optimization.css   # 滚动优化样式
-│
-├── components/                   # React 组件
-│   ├── history/                  # 观看历史相关组件
-│   │   ├── ClearHistoryButton.tsx
-│   │   ├── HistoryDownloadManager.tsx
-│   │   ├── HistoryItem.tsx
-│   │   ├── HistoryModal.tsx
-│   │   ├── HistoryScrollArea.tsx
-│   │   ├── HistorySectionHeader.tsx
-│   │   └── WatchHistorySidebar.tsx
-│   ├── home/                     # 首页相关组件
-│   │   ├── HomeEpisodeList.tsx
-│   │   ├── HomeHeader.tsx
-│   │   ├── HomeLayout.tsx
-│   │   ├── HomeSearchResults.tsx
-│   │   ├── HomeVideoActions.tsx
-│   │   ├── HomeVideoCard.tsx
-│   │   └── HomeVideoGrid.tsx
-│   ├── layout/                   # 布局组件
-│   │   └── SidebarLayout.tsx
-│   ├── player/                   # 播放器组件（53 个子组件）
-│   │   ├── DesktopPlayer.tsx     # 桌面播放器
-│   │   ├── MobilePlayer.tsx      # 移动端播放器
-│   │   ├── PlaybackControls.tsx  # 播放控制
-│   │   ├── ProgressBar.tsx       # 进度条
-│   │   ├── VolumeControl.tsx     # 音量控制
-│   │   └── ...                   # 其他播放器组件
-│   ├── search/                   # 搜索相关组件
-│   │   ├── SearchBar.tsx         # 搜索栏
-│   │   ├── SearchFilters.tsx     # 搜索过滤器
-│   │   ├── SearchHistory.tsx     # 搜索历史
-│   │   ├── SearchResults.tsx     # 搜索结果
-│   │   └── ...                   # 其他搜索组件
-│   ├── settings/                 # 设置相关组件
-│   │   ├── SettingsLayout.tsx    # 设置页面布局
-│   │   ├── SourceManagement.tsx  # 视频源管理
-│   │   ├── ThemeSettings.tsx     # 主题设置
-│   │   └── ...                   # 其他设置组件
-│   ├── ui/                       # 通用 UI 组件
-│   │   ├── Accordion.tsx         # 手风琴组件
-│   │   ├── Badge.tsx             # 徽章组件
-│   │   ├── Button.tsx            # 按钮组件
-│   │   ├── Input.tsx             # 输入框组件
-│   │   ├── Modal.tsx             # 模态框组件
-│   │   ├── ModalHeader.tsx       # 模态框头部
-│   │   ├── ScrollArea.tsx        # 滚动区域
-│   │   ├── Tabs.tsx              # 标签页组件
-│   │   └── ...                   # 其他基础组件
-│   ├── SearchLoadingAnimation.tsx
-│   ├── ServiceWorkerRegister.tsx # Service Worker 注册
-│   ├── ThemeProvider.tsx         # 主题提供者
-│   └── ThemeSwitcher.tsx         # 主题切换器
-│
-├── lib/                          # 核心逻辑和工具函数
-│   ├── accessibility/            # 无障碍功能
-│   │   └── keyboard-shortcuts.ts # 键盘快捷键
-│   ├── api/                      # API 客户端
-│   │   ├── client.ts             # HTTP 客户端
-│   │   ├── default-sources.ts    # 默认视频源配置
-│   │   ├── detail-api.ts         # 视频详情 API
-│   │   ├── http-utils.ts         # HTTP 工具函数
-│   │   ├── parsers.ts            # 数据解析器
-│   │   ├── search-api.ts         # 搜索 API（并行搜索）
-│   │   └── video-sources.ts      # 视频源类型定义
-│   ├── hooks/                    # React Hooks
-│   │   ├── mobile/               # 移动端专用 hooks
-│   │   │   ├── useMobileGestures.ts
-│   │   │   ├── useMobilePlaybackControls.ts
-│   │   │   └── useMobileTouchControls.ts
-│   │   ├── useHistoryDownloader.ts    # 历史视频下载
-│   │   ├── useHomePage.ts             # 首页逻辑
-│   │   ├── useInfiniteScroll.ts       # 无限滚动
-│   │   ├── useKeyboardNavigation.ts   # 键盘导航
-│   │   ├── useMobilePlayer.ts         # 移动端播放器
-│   │   ├── useParallelSearch.ts       # 并行搜索
-│   │   ├── useSearchAction.ts         # 搜索操作
-│   │   ├── useSearchCache.ts          # 搜索缓存
-│   │   ├── useSearchHistory.ts        # 搜索历史
-│   │   ├── useSearchState.ts          # 搜索状态
-│   │   ├── useSourceBadges.ts         # 来源徽章
-│   │   ├── useTypeBadges.ts           # 类型徽章
-│   │   └── useVideoPlayer.ts          # 视频播放器
-│   ├── store/                    # Zustand 状态管理
-│   │   ├── history-store.ts      # 观看历史状态
-│   │   ├── search-history-store.ts    # 搜索历史状态
-│   │   ├── settings-helpers.ts   # 设置辅助函数
-│   │   └── settings-store.ts     # 应用设置状态
-│   ├── types/                    # TypeScript 类型定义
-│   │   └── video.ts              # 视频相关类型
-│   └── utils/                    # 工具函数
-│       ├── cache-utils.ts        # 缓存工具
-│       ├── date-utils.ts         # 日期工具
-│       ├── dom-utils.ts          # DOM 工具
-│       ├── image-utils.ts        # 图片工具
-│       ├── player-utils.ts       # 播放器工具
-│       ├── scroll-utils.ts       # 滚动工具
-│       ├── storage-utils.ts      # 存储工具
-│       ├── theme-utils.ts        # 主题工具
-│       ├── url-utils.ts          # URL 工具
-│       └── video-utils.ts        # 视频工具
-│
-├── public/                       # 静态资源
-│   ├── icon.png                  # 应用图标
-│   └── service-worker.js         # Service Worker（缓存和离线支持）
-│
-├── .github/                      # GitHub 配置
-│   └── workflows/                # GitHub Actions
-├── .gitignore                    # Git 忽略文件
-├── CODE_OF_CONDUCT.md            # 行为准则
-├── CONTRIBUTING.md               # 贡献指南
-├── LICENSE                       # MIT 许可证
-├── README.md                     # 项目说明（本文件）
-├── SECURITY.md                   # 安全政策
-├── eslint.config.mjs             # ESLint 配置
-├── next-env.d.ts                 # Next.js 类型定义
-├── next.config.ts                # Next.js 配置
-├── package.json                  # 项目依赖
-├── postcss.config.mjs            # PostCSS 配置
-└── tsconfig.json                 # TypeScript 配置
-```
-
-## 🎨 Liquid Glass 设计系统
-
-### 设计原则
-
-Liquid Glass 设计系统是本项目的视觉核心，遵循以下原则：
-
-#### 1. 玻璃效果（数字元材质）
-
-```css
-/* 核心玻璃效果实现 */
-.glass {
-  backdrop-filter: blur(20px) saturate(180%) brightness(110%);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-```
-
-#### 2. 统一圆角
-
-- **容器类组件**：使用 `rounded-2xl`（较大的圆角）
-  - 按钮、输入框、卡片、模态框等
-- **小型元素**：使用 `rounded-full`（完全圆形/药丸形）
-  - 头像、徽章、滑块拇指等
-
-#### 3. 光影交互
-
-- 悬停状态：内发光效果
-- 焦点状态：增强的边框高亮
-- 动态阴影：根据交互状态调整
-
-#### 4. 流畅动画
-
-```css
-/* 标准过渡曲线 */
-transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-```
-
-### 组件库
-
-项目包含完整的 Liquid Glass 组件库：
-
-- **Accordion**：手风琴折叠面板
-- **Badge**：状态徽章和标签
-- **Button**：多种样式的按钮
-- **Input**：输入框和文本区域
-- **Modal**：模态对话框
-- **Tabs**：标签页切换
-- **ScrollArea**：自定义滚动区域
-- 更多组件位于 `components/ui/`
-
-## 🏗 架构设计
-
-### 状态管理
-
-使用 Zustand 进行状态管理，主要的 store 包括：
-
-1. **Settings Store**（`lib/store/settings-store.ts`）
-   - 主题设置
-   - 视频源管理
-   - 搜索排序偏好
-   - 播放器设置
-
-2. **History Store**（`lib/store/history-store.ts`）
-   - 观看历史记录
-   - 播放进度
-   - 历史管理操作
-
-3. **Search History Store**（`lib/store/search-history-store.ts`）
-   - 搜索历史
-   - 快速搜索建议
-
-### API 架构
-
-#### 并行搜索引擎
-
-```typescript
-// lib/api/search-api.ts
-// 同时在多个视频源中搜索，返回聚合结果
-export async function parallelSearch(query: string): Promise<SearchResult[]>
-```
-
-#### 豆瓣集成
-
-```typescript
-// app/api/douban/route.ts
-// 代理豆瓣 API，避免 CORS 问题
-```
-
-#### 视频代理
-
-```typescript
-// app/api/play/[...segments]/route.ts
-// 代理视频请求，处理跨域和防盗链
-```
-
-### 缓存策略
-
-#### Service Worker 缓存
-
-- **HLS 清单文件**：缓存 m3u8 播放列表
-- **视频片段**：智能缓存 .ts 视频片段
-- **静态资源**：缓存图片、CSS、JS 文件
-
-#### 历史视频预加载
-
-- 后台自动下载历史视频
-- 优先级队列管理
-- 存储空间管理
-
-### 性能优化
-
-1. **服务端组件**：首屏快速加载
-2. **代码分割**：按路由自动分割
-3. **图片优化**：渐进式加载
-4. **虚拟滚动**：大列表性能优化
-5. **缓存策略**：多层缓存机制
-
-## 🧑‍💻 开发指南
-
-### 代码规范
-
-#### 文件长度限制
-
-> [!IMPORTANT]
-> **所有项目文件必须保持在 150 行以内（除系统文件外）**
-
-这是项目的硬性规则。在提交代码前，请运行以下命令检查：
-
-```bash
-find . -type f -not -path "*/node_modules/*" -not -path "*/.next/*" -not -path "*/.git/*" -not -name "package-lock.json" -not -name "*.png" -not -name "*.md" | xargs wc -l | awk '$1 > 150 && $2 != "total" {print $2 " - " $1 "行"}'
-```
-
-如果有文件超过 150 行，请重构代码：
-
-1. **提取组件**：将大组件拆分为多个小组件
-2. **提取 Hook**：将复杂逻辑提取到自定义 Hook
-3. **提取工具函数**：将通用函数移至 `lib/utils/`
-4. **模块化**：按功能拆分文件
-
-#### TypeScript 规范
-
-- 避免使用 `any`，使用具体类型或 `unknown`
-- 为所有函数添加返回类型
-- 使用接口（`interface`）定义对象类型
-- 合理使用泛型提高代码复用性
-
-#### 组件规范
-
-- 使用函数组件和 Hooks
-- 遵循单一职责原则
-- Props 类型必须明确定义
-- 复用 `components/ui/` 下的基础组件
-
-#### 样式规范
-
-- 优先使用 Tailwind 类名
-- 复杂样式使用 CSS Modules 或专用 CSS 文件
-- 遵循 Liquid Glass 设计系统
-- 确保响应式设计
-
-### Git 工作流
-
-1. 从 `main` 分支创建功能分支
-2. 使用语义化的分支名（`feat/`、`fix/`、`docs/` 等）
-3. 编写清晰的提交信息
-4. 提交 PR 前确保通过所有检查
-
-### 测试
-
-运行代码检查：
-
-```bash
-npm run lint
-```
-
-### 调试技巧
-
-1. **React DevTools**：检查组件状态和 props
-2. **Console 日志**：使用分组和样式化日志
-3. **Network 面板**：监控 API 请求和缓存
-4. **Performance 面板**：分析性能瓶颈
-
-## 🚢 部署
-
-### Vercel 部署（推荐）
+#### 选项 1：Vercel 一键部署（推荐）
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KuekHaoYang/KVideo)
 
-1. 连接 GitHub 仓库
-2. Vercel 会自动检测 Next.js 项目
-3. 点击 "Deploy" 即可
+1. 点击上方按钮
+2. 连接你的 GitHub 账号
+3. Vercel 会自动检测 Next.js 项目并部署
+4. 几分钟后即可访问你自己的 KVideo 实例
 
-### 静态导出
+#### 选项 2：Docker 部署
 
-```bash
-# next.config.ts 中添加
-export default {
-  output: 'export'
-}
-
-# 构建
-npm run build
-# 输出到 out/ 目录
-```
-
-### 🐳 Docker 部署
-
-#### 1. 获取代码
-
-```bash
-git clone https://github.com/KuekHaoYang/KVideo.git
-cd KVideo
-```
-
-#### 2. 构建镜像
-
-```bash
-docker build -t kvideo .
-```
-
-#### 3. 运行容器
-
-```bash
-docker-compose up -d
-```
-
-应用将在 `http://localhost:3000` 启动。
-
-#### 3. 使用 Docker Hub 安装
-
-如果你不想自己构建镜像，可以直接从 Docker Hub 拉取：
+**从 Docker Hub 拉取（最简单）：**
 
 ```bash
 # 拉取最新版本
 docker pull kuekhaoyang/kvideo:latest
 docker run -d -p 3000:3000 --name kvideo kuekhaoyang/kvideo:latest
-
-# 或拉取特定版本
-docker pull kuekhaoyang/kvideo:1.0.0
-docker run -d -p 3000:3000 --name kvideo kuekhaoyang/kvideo:1.0.0
 ```
 
-> **✨ 多架构支持**：镜像支持 4 种主流平台架构，覆盖 99% 的使用场景：
+应用将在 `http://localhost:3000` 启动。
+
+> **✨ 多架构支持**：镜像支持 4 种主流平台架构：
 > - `linux/amd64` - Intel/AMD 64位（大多数服务器、PC、Intel Mac）
-> - `linux/arm64` - ARM 64位（**Apple Silicon Mac**、AWS Graviton、树莓派 4/5）
+> - `linux/arm64` - ARM 64位（Apple Silicon Mac、AWS Graviton、树莓派 4/5）
 > - `linux/arm/v7` - ARM 32位 v7（树莓派 2/3/4）
 > - `linux/arm/v6` - ARM 32位 v6（树莓派 1/Zero）
 
-#### 4. 如何更新镜像
-
-当有新版本发布时，可以通过以下命令更新：
+**自己构建镜像：**
 
 ```bash
+git clone https://github.com/KuekHaoYang/KVideo.git
+cd KVideo
+docker build -t kvideo .
+docker run -d -p 3000:3000 --name kvideo kvideo
+```
+
+**使用 Docker Compose：**
+
+```bash
+docker-compose up -d
+```
+
+#### 选项 3：传统 Node.js 部署
+
+```bash
+# 1. 克隆仓库
+git clone https://github.com/KuekHaoYang/KVideo.git
+cd KVideo
+
+# 2. 安装依赖
+npm install
+
+# 3. 构建项目
+npm run build
+
+# 4. 启动生产服务器
+npm start
+```
+
+应用将在 `http://localhost:3000` 启动。
+
+## 🔄 如何更新
+
+### Vercel 部署
+
+Vercel 会自动检测 GitHub 仓库的更新并重新部署，无需手动操作。
+
+### Docker 部署
+
+当有新版本发布时：
+
+```bash
+# 停止并删除旧容器
 docker stop kvideo
 docker rm kvideo
+
+# 拉取最新镜像
 docker pull kuekhaoyang/kvideo:latest
+
+# 运行新容器
 docker run -d -p 3000:3000 --name kvideo kuekhaoyang/kvideo:latest
 ```
 
-> **🔄 自动化部署**：本项目使用 GitHub Actions 自动构建和发布 Docker 镜像。每次代码推送到 main 分支时，会自动构建多架构镜像并推送到 Docker Hub，版本号从 `package.json` 读取。
+### Node.js 部署
 
-## 🤝 贡献
+```bash
+cd KVideo
+git pull origin main
+npm install
+npm run build
+npm start
+```
 
-我们非常欢迎各种形式的贡献！请查看 [CONTRIBUTING.md](CONTRIBUTING.md) 了解详细的贡献指南。
+> **🔄 自动化部署**：本项目使用 GitHub Actions 自动构建和发布 Docker 镜像。每次代码推送到 main 分支时，会自动构建多架构镜像并推送到 Docker Hub。
 
-### 快速贡献
+## 🤝 贡献代码
 
-1. **报告 Bug**：使用 GitHub Issues
-2. **功能建议**：在 Issues 中提出
+我们非常欢迎各种形式的贡献！无论是报告 Bug、提出新功能建议、改进文档，还是提交代码，你的每一份贡献都让这个项目变得更好。
+
+**想要参与开发？请查看 [贡献指南](CONTRIBUTING.md) 了解详细的开发规范和流程。**
+
+快速开始：
+1. **报告 Bug**：[提交 Issue](https://github.com/KuekHaoYang/KVideo/issues)
+2. **功能建议**：在 Issues 中提出你的想法
 3. **代码贡献**：Fork → Branch → PR
 4. **文档改进**：直接提交 PR
 

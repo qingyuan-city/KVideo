@@ -28,6 +28,7 @@ interface HistoryStore {
 
   removeFromHistory: (videoId: string | number, source: string) => void;
   clearHistory: () => void;
+  importHistory: (history: VideoHistoryItem[]) => void;
 }
 
 /**
@@ -134,6 +135,10 @@ export const useHistoryStore = create<HistoryStore>()(
         // Clear all cached segments
         clearAllCache();
         set({ viewingHistory: [] });
+      },
+
+      importHistory: (history) => {
+        set({ viewingHistory: history });
       },
     }),
     {

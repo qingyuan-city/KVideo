@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { processM3u8Content } from '@/lib/utils/proxy-utils';
+import { fetchWithRetry } from '@/lib/utils/fetch-with-retry';
 
 export const runtime = 'nodejs';
 
@@ -14,67 +15,43 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-        // Beijing IP address to simulate request from China
-        const chinaIP = '202.108.22.5';
-        const MAX_RETRIES = 5;
-        let lastError = null;
-        let response = null;
-
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            try {
-                response = await fetch(url, {
-                    headers: {
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                        'X-Forwarded-For': chinaIP,
-                        'Client-IP': chinaIP,
-                        'Referer': new URL(url).origin,
-                    },
-                });
-
-                if (response.ok) {
-                    console.log(`✓ Proxy success on attempt ${attempt}: ${url}`);
-                    break;
-                }
-
-                if (response.status === 503 && attempt < MAX_RETRIES) {
-                    console.warn(`⚠ Got 503 on attempt ${attempt}, retrying... (${url})`);
-                    lastError = `503 on attempt ${attempt}`;
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                    continue;
-                }
-
-                console.warn(`✗ Got ${response.status} on attempt ${attempt}: ${url}`);
-                break;
-            } catch (fetchError) {
-                lastError = fetchError;
-                if (attempt < MAX_RETRIES) {
-                    console.warn(`⚠ Fetch error on attempt ${attempt}, retrying...`, fetchError);
-                    await new Promise(resolve => setTimeout(resolve, 100));
-                } else {
-                    throw fetchError;
-                }
-            }
-        }
-
-        if (!response || !response.ok) {
-            throw new Error(`Failed after ${MAX_RETRIES} attempts: ${response?.status || lastError}`);
-        }
+        const response = await fetchWithRetry({ url, request });
 
         const contentType = response.headers.get('Content-Type');
 
-        // Handle m3u8 playlists
-        if (contentType && (contentType.includes('application/vnd.apple.mpegurl') || contentType.includes('application/x-mpegurl') || url.endsWith('.m3u8'))) {
-            const text = await response.text();
-            const modifiedText = await processM3u8Content(text, url, request.nextUrl.origin);
+        // Better M3U8 detection: check both content-type and actual content
+        const isM3u8ByHeader = contentType &&
+            (contentType.includes('application/vnd.apple.mpegurl') ||
+                contentType.includes('application/x-mpegurl')) ||
+            url.endsWith('.m3u8');
 
-            return new NextResponse(modifiedText, {
+        // For potential M3U8 files, check content
+        if (isM3u8ByHeader || url.includes('.m3u8')) {
+            const text = await response.text();
+
+            // Verify it's actually M3U8 content (starts with #EXTM3U or #EXT-X-)
+            if (text.trim().startsWith('#EXTM3U') || text.trim().startsWith('#EXT-X-')) {
+                const modifiedText = await processM3u8Content(text, url, request.nextUrl.origin);
+
+                return new NextResponse(modifiedText, {
+                    status: response.status,
+                    statusText: response.statusText,
+                    headers: {
+                        'Content-Type': 'application/vnd.apple.mpegurl',
+                        'Access-Control-Allow-Origin': '*',
+                        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+                        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+                    },
+                });
+            }
+
+            // Not M3U8 content, return as-is
+            return new NextResponse(text, {
                 status: response.status,
                 statusText: response.statusText,
                 headers: {
-                    'Content-Type': contentType,
+                    'Content-Type': contentType || 'text/plain',
                     'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
                 },
             });
         }

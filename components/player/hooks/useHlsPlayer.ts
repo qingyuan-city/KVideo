@@ -54,6 +54,23 @@ export function useHlsPlayer({
 
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
                     console.log('[HLS] Manifest parsed');
+
+                    // Check for HEVC/H.265 codec (limited browser support)
+                    if (hls) {
+                        const levels = hls.levels;
+                        if (levels && levels.length > 0) {
+                            const hasHEVC = levels.some(level =>
+                                level.videoCodec?.toLowerCase().includes('hev') ||
+                                level.videoCodec?.toLowerCase().includes('h265')
+                            );
+                            if (hasHEVC) {
+                                console.warn('[HLS] ⚠️ HEVC/H.265 codec detected - may not play in all browsers');
+                                console.warn('[HLS] Supported: Safari with hardware acceleration, some Edge versions');
+                                console.warn('[HLS] Not supported: Most Chrome/Firefox versions');
+                            }
+                        }
+                    }
+
                     if (autoPlay) {
                         video.play().catch((err) => {
                             console.warn('[HLS] Autoplay prevented:', err);
@@ -62,22 +79,39 @@ export function useHlsPlayer({
                     }
                 });
 
+                let networkErrorRetries = 0;
+                let mediaErrorRetries = 0;
+                const MAX_RETRIES = 3;
+
                 hls.on(Hls.Events.ERROR, (event, data) => {
                     if (data.fatal) {
                         switch (data.type) {
                             case Hls.ErrorTypes.NETWORK_ERROR:
-                                console.error('[HLS] Network error, trying to recover...');
-                                hls?.startLoad();
+                                networkErrorRetries++;
+                                console.error(`[HLS] Network error (${networkErrorRetries}/${MAX_RETRIES}), trying to recover...`, data);
+                                if (networkErrorRetries <= MAX_RETRIES) {
+                                    hls?.startLoad();
+                                } else {
+                                    console.error('[HLS] Too many network errors, giving up');
+                                }
                                 break;
                             case Hls.ErrorTypes.MEDIA_ERROR:
-                                console.error('[HLS] Media error, trying to recover...');
-                                hls?.recoverMediaError();
+                                mediaErrorRetries++;
+                                console.error(`[HLS] Media error (${mediaErrorRetries}/${MAX_RETRIES}), trying to recover...`, data);
+                                if (mediaErrorRetries <= MAX_RETRIES) {
+                                    hls?.recoverMediaError();
+                                } else {
+                                    console.error('[HLS] Too many media errors, giving up');
+                                }
                                 break;
                             default:
                                 console.error('[HLS] Fatal error, cannot recover:', data);
                                 hls?.destroy();
                                 break;
                         }
+                    } else {
+                        // Non-fatal errors
+                        console.warn('[HLS] Non-fatal error:', data.type, data.details);
                     }
                 });
             } else {

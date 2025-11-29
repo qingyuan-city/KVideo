@@ -21,7 +21,6 @@ export async function parseHLSManifest(src: string): Promise<Segment[]> {
 
     const lines = manifestText.split('\n');
     const segments: Segment[] = [];
-    const baseUrl = src.substring(0, src.lastIndexOf('/') + 1);
     let currentSegmentDuration = 0;
     let currentStartTime = 0;
 

@@ -1,7 +1,6 @@
 import { Video } from '@/lib/types';
 import { getSourceName } from '@/lib/utils/source-names';
 import { calculateRelevanceScore, hasMinimumMatch } from '@/lib/utils/search';
-import { binaryInsertVideos } from '@/lib/utils/sorted-insert';
 
 interface StreamHandlerParams {
     reader: ReadableStreamDefaultReader<Uint8Array>;
@@ -24,14 +23,12 @@ export async function processSearchStream({
 }: StreamHandlerParams) {
     const decoder = new TextDecoder();
     let buffer = '';
-    let lastProgressTime = Date.now();
     let timeoutId: NodeJS.Timeout | null = null;
     let isCompleted = false;
 
     // Auto-complete if no progress for 3 seconds
     const resetTimeout = () => {
         if (timeoutId) clearTimeout(timeoutId);
-        lastProgressTime = Date.now();
 
         timeoutId = setTimeout(() => {
             if (!isCompleted) {

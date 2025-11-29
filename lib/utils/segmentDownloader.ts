@@ -24,7 +24,6 @@ export async function downloadSegmentQueue(options: DownloadQueueOptions): Promi
     if (!('caches' in window)) return;
 
     const cache = await caches.open(CACHE_NAME);
-    let activeCount = 0;
     let currentIndex = startIndex;
 
     const processNext = async () => {
@@ -33,7 +32,6 @@ export async function downloadSegmentQueue(options: DownloadQueueOptions): Promi
         const segment = segments[currentIndex];
         const url = segment.url;
         currentIndex++;
-        activeCount++;
 
         const timeoutController = new AbortController();
         const timeoutId = setTimeout(() => timeoutController.abort(), TIMEOUT_MS);
@@ -72,11 +70,10 @@ export async function downloadSegmentQueue(options: DownloadQueueOptions): Promi
                     }
                 }
             }
-        } catch (err) {
+        } catch {
             // Ignore errors
         } finally {
             clearTimeout(timeoutId);
-            activeCount--;
             if (!signal.aborted) processNext();
         }
     };

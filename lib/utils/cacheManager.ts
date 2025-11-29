@@ -6,7 +6,7 @@ const MAX_CACHE_SIZE_MB = 1000; // 1GB
 
 interface CacheMetadata { url: string; videoUrl: string; cachedAt: number; size: number; lastAccessed: number; }
 
-export interface CacheStats { totalEntries: number; totalSizeMB: number; oldestEntry: number; newestEntry: number; }
+interface CacheStats { totalEntries: number; totalSizeMB: number; oldestEntry: number; newestEntry: number; }
 
 class CacheManager {
     private metadata = new Map<string, CacheMetadata>();

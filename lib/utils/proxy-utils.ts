@@ -1,4 +1,3 @@
-import { NextRequest } from 'next/server';
 
 export async function processM3u8Content(
     content: string,
@@ -19,7 +18,7 @@ export async function processM3u8Content(
             const absoluteUrl = new URL(line.trim(), base).toString();
             // Wrap in proxy
             return `${origin}/api/proxy?url=${encodeURIComponent(absoluteUrl)}`;
-        } catch (e) {
+        } catch {
             return line;
         }
     });

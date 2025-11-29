@@ -11,7 +11,7 @@ import { useHistoryStore } from '@/lib/store/history-store';
 import { parseHLSManifest } from '@/lib/utils/hlsManifestParser';
 import { downloadSegmentQueue } from '@/lib/utils/segmentDownloader';
 
-export function useHistoryDownloader() {
+function useHistoryDownloader() {
     const viewingHistory = useHistoryStore((state) => state.viewingHistory);
     const processedUrlsRef = useRef<Set<string>>(new Set());
     const pathname = usePathname();

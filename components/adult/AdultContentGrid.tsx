@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
 import { Card } from '@/components/ui/Card';
+import { Icons } from '@/components/ui/Icon';
 
 interface AdultVideo {
     vod_id: string | number;
@@ -133,8 +134,6 @@ function AdultGridNoMore() {
 }
 
 function AdultGridEmpty() {
-    // Using require to avoid top-level import issues if any, matching MovieGrid pattern
-    const { Icons } = require('@/components/ui/Icon');
     return (
         <div className="text-center py-20">
             <Icons.Film size={64} className="text-[var(--text-color-secondary)] mx-auto mb-4" />

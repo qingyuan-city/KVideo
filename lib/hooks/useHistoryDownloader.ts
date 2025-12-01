@@ -32,7 +32,7 @@ function useHistoryDownloader() {
                 // Skip if not m3u8
                 if (!url.endsWith('.m3u8')) continue;
 
-                console.log(`[HistoryDownloader] Queueing background download for: ${item.title}`);
+                // Queue background download
                 processedUrlsRef.current.add(url);
 
                 try {
@@ -46,9 +46,7 @@ function useHistoryDownloader() {
                         signal: controller.signal,
                         videoUrl: url, // Track metadata for this video
                         onProgress: (current, total) => {
-                            if (current % 50 === 0) {
-                                console.log(`[HistoryDownloader] ${item.title}: ${current}/${total}`);
-                            }
+                            // console.log removed as per instruction
                         }
                     });
                 } catch (error) {

@@ -27,12 +27,11 @@ export function useHLSPreloader({ src, currentTime, videoRef, isLoading }: UseHL
 
         const fetchManifest = async () => {
             try {
-                console.log('[Preloader] Fetching manifest:', src);
+                // Fetch manifest
                 const segments = await parseHLSManifest(src);
                 segmentsRef.current = segments;
                 setIsManifestLoaded(true);
                 const totalDuration = segments[segments.length - 1]?.startTime + segments[segments.length - 1]?.duration || 0;
-                console.log(`[Preloader] Parsed ${segments.length} segments. Total duration: ${totalDuration.toFixed(2)}s`);
             } catch (error) {
                 const errorMessage = error instanceof Error ? error.message : String(error);
                 if (errorMessage.includes('503') || errorMessage.includes('Network unavailable')) {

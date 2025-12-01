@@ -50,7 +50,6 @@ export async function downloadSegmentQueue(options: DownloadQueueOptions): Promi
                     await cache.delete(url);
                 }
 
-                console.log(`[Preloader] 正在下载片段 ${currentIndex}/${segments.length}`);
                 const response = await fetch(url, { signal: fetchSignal });
 
                 if (response.ok) {

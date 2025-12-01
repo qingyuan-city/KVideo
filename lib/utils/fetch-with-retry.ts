@@ -61,7 +61,6 @@ export async function fetchWithRetry({ url, request, headers = {} }: FetchWithRe
             clearTimeout(timeoutId);
 
             if (response.ok) {
-                console.log(`✓ Proxy success on attempt ${attempt}: ${url.substring(0, 100)}...`);
                 break;
             }
 

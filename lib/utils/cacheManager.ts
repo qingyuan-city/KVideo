@@ -17,7 +17,6 @@ class CacheManager {
         try {
             const stored = localStorage.getItem(METADATA_STORE);
             if (stored) this.metadata = new Map(Object.entries(JSON.parse(stored)));
-            console.log('[CacheManager] Initialized with', this.metadata.size, 'entries');
         } catch (error) { console.error('[CacheManager] Init failed:', error); }
         this.initialized = true;
     }
@@ -38,7 +37,6 @@ class CacheManager {
         const meta = this.metadata.get(url);
         if (!meta) return false;
         if (Date.now() - meta.cachedAt > CACHE_TTL) {
-            console.log('[CacheManager] Cache expired:', url);
             return false;
         }
         meta.lastAccessed = Date.now();
@@ -61,7 +59,6 @@ class CacheManager {
         await this.initialize();
         const stats = await this.getCacheStats();
         if (stats.totalSizeMB > MAX_CACHE_SIZE_MB) {
-            console.log(`[CacheManager] Size ${stats.totalSizeMB.toFixed(2)}MB exceeds ${MAX_CACHE_SIZE_MB}MB`);
             await this.cleanupOldEntries();
         }
         await this.cleanupExpiredEntries();
@@ -82,7 +79,6 @@ class CacheManager {
         }
         if (cleaned > 0) {
             this.save();
-            console.log(`[CacheManager] Cleaned ${cleaned} expired entries`);
         }
         return cleaned;
     }
@@ -101,7 +97,6 @@ class CacheManager {
         }
         if (removed > 0) {
             this.save();
-            console.log(`[CacheManager] Removed ${removed} old entries`);
         }
         return removed;
     }
@@ -120,7 +115,6 @@ class CacheManager {
         }
         if (cleared > 0) {
             this.save();
-            console.log(`[CacheManager] Cleared ${cleared} entries for:`, videoUrl);
         }
         return cleared;
     }
@@ -133,7 +127,6 @@ class CacheManager {
         const count = this.metadata.size;
         this.metadata.clear();
         this.save();
-        console.log(`[CacheManager] Cleared all ${count} entries`);
         return count;
     }
 }

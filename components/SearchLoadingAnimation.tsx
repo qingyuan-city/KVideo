@@ -10,9 +10,9 @@ interface SearchLoadingAnimationProps {
   onComplete?: (checkedSources: number, totalSources: number) => void;
 }
 
-export function SearchLoadingAnimation({ 
-  currentSource, 
-  checkedSources = 0, 
+export function SearchLoadingAnimation({
+  currentSource,
+  checkedSources = 0,
   totalSources = 16,
   isPaused = false,
   onComplete,
@@ -54,7 +54,7 @@ export function SearchLoadingAnimation({
       // Small delay to allow animation to settle
       const timeout = setTimeout(() => {
         onComplete(checkedSources, totalSources);
-      }, 300);
+      }, 100);
       return () => clearTimeout(timeout);
     }
   }, [isComplete, onComplete, checkedSources, totalSources]);
@@ -78,7 +78,7 @@ export function SearchLoadingAnimation({
             strokeLinecap="round"
           />
         </svg>
-        
+
         <span className="text-sm font-medium text-[var(--text-color-secondary)]">
           正在搜索视频源{dots}
         </span>
@@ -86,19 +86,19 @@ export function SearchLoadingAnimation({
 
       {/* Progress Bar - Unified 0-100% */}
       <div className="w-full">
-        <div 
+        <div
           className="h-1 bg-[color-mix(in_srgb,var(--glass-bg)_50%,transparent)] overflow-hidden rounded-[var(--radius-full)]"
         >
           <div
             className="h-full bg-[var(--accent-color)] transition-all duration-500 ease-out relative rounded-[var(--radius-full)]"
-            style={{ 
+            style={{
               width: `${progress}%`
             }}
           >
             {/* Shimmer Effect - Optimized for GPU with contain for better performance */}
-            <div 
+            <div
               className="absolute inset-0 animate-shimmer"
-              style={{ 
+              style={{
                 background: 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%)',
                 willChange: 'transform',
                 transform: 'translateZ(0)',
@@ -107,7 +107,7 @@ export function SearchLoadingAnimation({
             ></div>
           </div>
         </div>
-        
+
         {/* Progress Info - Real-time count with pause indicator */}
         <div className="flex items-center justify-between mt-2 text-xs text-[var(--text-color-secondary)]">
           <span className="flex items-center gap-2">

@@ -35,7 +35,6 @@ export async function parseHLSManifest(src: string): Promise<Segment[]> {
 
     // Check if this is a master playlist
     if (manifestText.includes('#EXT-X-STREAM-INF')) {
-        console.log('[HLS Parser] Master playlist detected, selecting variant...');
         return parseMasterPlaylist(manifestText, src);
     }
 
@@ -61,7 +60,6 @@ async function parseMasterPlaylist(content: string, baseUrl: string): Promise<Se
                 const line = lines[j].trim();
                 if (line && !line.startsWith('#')) {
                     const variantUrl = new URL(line, baseUrl).toString();
-                    console.log(`[HLS Parser] Selected variant: ${variantUrl.substring(0, 100)}...`);
                     // Recursively parse the variant playlist
                     return parseHLSManifest(variantUrl);
                 }
@@ -86,7 +84,6 @@ function parseMediaPlaylist(content: string, baseUrl: string): Segment[] {
         // Check for encryption
         if (trimmed.startsWith('#EXT-X-KEY:')) {
             isEncrypted = true;
-            console.log('[HLS Parser] Encrypted stream detected');
         }
 
         if (trimmed.startsWith('#EXTINF:')) {
@@ -103,10 +100,6 @@ function parseMediaPlaylist(content: string, baseUrl: string): Segment[] {
             });
             currentStartTime += currentSegmentDuration;
         }
-    }
-
-    if (isEncrypted) {
-        console.log(`[HLS Parser] Parsed ${segments.length} encrypted segments`);
     }
 
     return segments;

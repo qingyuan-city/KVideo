@@ -60,12 +60,9 @@ export function preloadSegments({
         return;
     }
 
-    // Only log on significant seeks or initial start
+    // Mark as initialized or handle seek
     if (!isInitializedRef.current) {
-        console.log(`[Preloader] Initial start at segment ${startIndex} (${currentTime.toFixed(2)}s)`);
         isInitializedRef.current = true;
-    } else if (!isSequential) {
-        console.log(`[Preloader] Seek detected. Current Time: ${currentTime.toFixed(2)}s. Starting from segment ${startIndex}.`);
     }
 
     lastStartIndexRef.current = startIndex;

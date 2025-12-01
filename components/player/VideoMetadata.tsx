@@ -50,7 +50,7 @@ export function VideoMetadata({ videoData, source, title }: VideoMetadataProps) 
             )}
           </div>
           {videoData?.vod_content && (
-            <p className="text-sm sm:text-base text-[var(--text-secondary)] line-clamp-3">
+            <p className="text-sm sm:text-base text-[var(--text-secondary)]">
               {videoData.vod_content.replace(/<[^>]*>/g, '')}
             </p>
           )}

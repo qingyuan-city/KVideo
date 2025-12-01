@@ -4,6 +4,7 @@
  */
 
 import { MovieCard } from './MovieCard';
+import { Icons } from '@/components/ui/Icon';
 
 interface DoubanMovie {
   id: string;
@@ -81,7 +82,6 @@ function MovieGridNoMore() {
 }
 
 function MovieGridEmpty() {
-  const { Icons } = require('@/components/ui/Icon');
   return (
     <div className="text-center py-20">
       <Icons.Film size={64} className="text-[var(--text-color-secondary)] mx-auto mb-4" />

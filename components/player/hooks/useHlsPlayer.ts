@@ -42,7 +42,6 @@ export function useHlsPlayer({
             // EXCEPT for Chrome on Desktop which reports canPlayType as '' (false).
 
             if (!isNativeHlsSupported) {
-                console.log('[HLS] Initializing hls.js');
                 hls = new Hls({
                     enableWorker: true,
                     lowLatencyMode: true,
@@ -53,7 +52,6 @@ export function useHlsPlayer({
                 hls.attachMedia(video);
 
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    console.log('[HLS] Manifest parsed');
 
                     // Check for HEVC/H.265 codec (limited browser support)
                     if (hls) {
@@ -115,13 +113,11 @@ export function useHlsPlayer({
                     }
                 });
             } else {
-                console.log('[HLS] Using native HLS support');
                 // Native HLS support
                 video.src = src;
             }
         } else if (isNativeHlsSupported) {
             // Fallback for environments where Hls.js is not supported but native is (e.g. iOS without MSE?)
-            console.log('[HLS] Using native HLS support (Hls.js not supported)');
             video.src = src;
         } else {
             console.error('[HLS] HLS not supported in this browser');

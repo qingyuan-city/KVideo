@@ -77,7 +77,6 @@ export function VideoPlayer({ playUrl, videoId, currentEpisode, onBack }: VideoP
 
     // Auto-retry with proxy if not already using it
     if (!useProxy) {
-      console.log('Attempting to retry with proxy...');
       setUseProxy(true);
       setShouldAutoPlay(true); // Force autoplay after proxy retry
       setVideoError('');

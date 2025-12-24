@@ -155,7 +155,13 @@ docker run -d -p 3000:3000 -e ACCESS_PASSWORD=your_secret_password --name kvideo
 
 
 
-#### 选项 1：Vercel 一键部署（推荐）
+#### 选项 1：Cloudflare Pages 一键部署（推荐）
+
+<a href="https://deploy.workers.cloudflare.com/?url=https://github.com/KuekHaoYang/KVideo">
+  <img src="https://deploy.workers.cloudflare.com/button" alt="Deploy to Cloudflare Pages" />
+</a>
+
+#### 选项 2：Vercel 一键部署
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/KuekHaoYang/KVideo)
 

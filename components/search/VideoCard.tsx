@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Icons } from '@/components/ui/Icon';
 import { LatencyBadge } from '@/components/ui/LatencyBadge';
+import { FavoriteButton } from '@/components/favorites/FavoriteButton';
 
 import { Video } from '@/lib/types';
 
@@ -92,6 +93,22 @@ export const VideoCard = memo<VideoCardProps>(({
                             )}
                         </div>
 
+                        {/* Favorite Button - Top Right */}
+                        <div className={`absolute top-2 right-2 z-20 transition-opacity duration-200 ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
+                            <FavoriteButton
+                                videoId={video.vod_id}
+                                source={video.source}
+                                title={video.vod_name}
+                                poster={video.vod_pic}
+                                sourceName={video.sourceName}
+                                type={video.type_name}
+                                year={video.vod_year}
+                                remarks={video.vod_remarks}
+                                size={16}
+                                className="shadow-md"
+                            />
+                        </div>
+
                         {/* Overlay */}
                         <div
                             className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${isActive ? 'opacity-100 lg:opacity-0 lg:group-hover:opacity-100' : 'opacity-0 lg:group-hover:opacity-100'
@@ -139,3 +156,4 @@ export const VideoCard = memo<VideoCardProps>(({
 });
 
 VideoCard.displayName = 'VideoCard';
+

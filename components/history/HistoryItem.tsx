@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Icons } from '@/components/ui/Icon';
 import { formatTime, formatDate } from '@/lib/utils/format-utils';
 import { PosterImage } from './PosterImage';
+import { FavoriteButton } from '@/components/favorites/FavoriteButton';
 
 interface HistoryItemProps {
   videoId: string | number;
@@ -91,18 +92,33 @@ export function HistoryItem({
             </div>
           </div>
 
-          {/* Delete button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onRemove();
-            }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-[var(--glass-bg)] rounded-full self-start cursor-pointer"
-            aria-label="删除"
-          >
-            <Icons.Trash size={16} className="text-[var(--text-color-secondary)]" />
-          </button>
+          {/* Actions */}
+          <div className="flex flex-col gap-1 self-start opacity-0 group-hover:opacity-100 transition-opacity">
+            {/* Favorite button */}
+            <FavoriteButton
+              videoId={videoId}
+              source={source}
+              title={title}
+              poster={poster}
+              remarks={episodeText}
+              size={14}
+              className="!p-1.5 !bg-transparent !border-0 !shadow-none hover:!bg-[var(--glass-bg)]"
+              showTooltip={false}
+            />
+
+            {/* Delete button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onRemove();
+              }}
+              className="p-1.5 hover:bg-[var(--glass-bg)] rounded-full cursor-pointer"
+              aria-label="删除"
+            >
+              <Icons.Trash size={14} className="text-[var(--text-color-secondary)]" />
+            </button>
+          </div>
         </div>
       </a>
     </div>

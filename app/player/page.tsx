@@ -10,6 +10,8 @@ import { PlayerError } from '@/components/player/PlayerError';
 import { useVideoPlayer } from '@/lib/hooks/useVideoPlayer';
 import { useHistoryStore } from '@/lib/store/history-store';
 import { WatchHistorySidebar } from '@/components/history/WatchHistorySidebar';
+import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
+import { FavoriteButton } from '@/components/favorites/FavoriteButton';
 import { PlayerNavbar } from '@/components/player/PlayerNavbar';
 import Image from 'next/image';
 
@@ -122,6 +124,24 @@ function PlayerContent() {
                 source={source}
                 title={title}
               />
+
+              {/* Favorite Button for current video */}
+              {videoData && videoId && (
+                <div className="flex items-center gap-3 mt-4">
+                  <FavoriteButton
+                    videoId={videoId}
+                    source={source}
+                    title={videoData.vod_name || title || '未知视频'}
+                    poster={videoData.vod_pic}
+                    type={videoData.type_name}
+                    year={videoData.vod_year}
+                    size={20}
+                  />
+                  <span className="text-sm text-[var(--text-color-secondary)]">
+                    收藏这个视频
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Episodes Sidebar */}
@@ -136,7 +156,10 @@ function PlayerContent() {
         )}
       </main>
 
-      {/* Watch History Sidebar */}
+      {/* Favorites Sidebar - Left */}
+      <FavoritesSidebar />
+
+      {/* Watch History Sidebar - Right */}
       <WatchHistorySidebar />
     </div>
   );

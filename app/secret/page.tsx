@@ -7,6 +7,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { SearchResults } from '@/components/home/SearchResults';
 import { useSecretHomePage } from '@/lib/hooks/useSecretHomePage';
 import { AdultContent } from '@/components/adult/AdultContent';
+import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
 
 function SecretHomePage() {
     const {
@@ -64,6 +65,9 @@ function SecretHomePage() {
                     <AdultContent onSearch={handleSearch} />
                 )}
             </main>
+
+            {/* Favorites Sidebar - Left */}
+            <FavoritesSidebar />
         </div>
     );
 }

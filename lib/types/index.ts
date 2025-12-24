@@ -86,6 +86,19 @@ export interface VideoHistoryItem {
   showIdentifier: string; // Unique identifier for deduplication
 }
 
+// Favorite Entry
+export interface FavoriteItem {
+  videoId: string | number;
+  title: string;
+  poster?: string;
+  source: string;
+  sourceName?: string;
+  addedAt: number; // timestamp
+  type?: string; // movie type/category
+  year?: string;
+  remarks?: string; // e.g., episode info
+}
+
 // API Response Structures
 export interface ApiSearchResponse {
   code: number;

@@ -5,6 +5,7 @@ import { SearchForm } from '@/components/search/SearchForm';
 import { NoResults } from '@/components/search/NoResults';
 import { PopularFeatures } from '@/components/home/PopularFeatures';
 import { WatchHistorySidebar } from '@/components/history/WatchHistorySidebar';
+import { FavoritesSidebar } from '@/components/favorites/FavoritesSidebar';
 import { Navbar } from '@/components/layout/Navbar';
 import { SearchResults } from '@/components/home/SearchResults';
 import { useHomePage } from '@/lib/hooks/useHomePage';
@@ -63,7 +64,10 @@ function HomePage() {
         )}
       </main>
 
-      {/* Watch History Sidebar */}
+      {/* Favorites Sidebar - Left */}
+      <FavoritesSidebar />
+
+      {/* Watch History Sidebar - Right */}
       <WatchHistorySidebar />
     </div>
   );

@@ -24,7 +24,7 @@ function SecretHomePage() {
     return (
         <div className="min-h-screen bg-black">
             {/* Glass Navbar */}
-            <Navbar onReset={handleReset} />
+            <Navbar onReset={handleReset} isSecretMode={true} />
 
             {/* Search Form - Separate from navbar */}
             <div className="max-w-7xl mx-auto px-4 mt-6 mb-8 relative" style={{

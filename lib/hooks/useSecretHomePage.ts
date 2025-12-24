@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSearchCache } from '@/lib/hooks/useSearchCache';
 import { useParallelSearch } from '@/lib/hooks/useParallelSearch';
-import { ADULT_SOURCES } from '@/lib/api/adult-sources';
+import { settingsStore } from '@/lib/store/settings-store';
 
 export function useSecretHomePage() {
     const router = useRouter();
@@ -13,6 +13,12 @@ export function useSecretHomePage() {
     const [query, setQuery] = useState('');
     const [hasSearched, setHasSearched] = useState(false);
     const [currentSortBy, setCurrentSortBy] = useState('default');
+
+    // Get adult sources from settings store (supports user customization)
+    const enabledAdultSources = useMemo(() => {
+        const settings = settingsStore.getSettings();
+        return settings.adultSources.filter(s => s.enabled);
+    }, []);
 
     // Search stream hook
     const {
@@ -58,8 +64,8 @@ export function useSecretHomePage() {
     const handleSearch = (searchQuery: string) => {
         setQuery(searchQuery);
         setHasSearched(true);
-        // Always use ADULT_SOURCES
-        performSearch(searchQuery, ADULT_SOURCES, currentSortBy as any);
+        // Use enabled adult sources from settings
+        performSearch(searchQuery, enabledAdultSources, currentSortBy as any);
     };
 
     const handleReset = () => {

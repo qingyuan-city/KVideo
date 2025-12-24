@@ -32,7 +32,9 @@ export function useSettingsPage() {
 
     const handleSourcesChange = (newSources: VideoSource[]) => {
         setSources(newSources);
+        const currentSettings = settingsStore.getSettings();
         settingsStore.saveSettings({
+            ...currentSettings,
             sources: newSources,
             sortBy,
             searchHistory: true,
@@ -58,7 +60,9 @@ export function useSettingsPage() {
 
     const handleSortChange = (newSort: SortOption) => {
         setSortBy(newSort);
+        const currentSettings = settingsStore.getSettings();
         settingsStore.saveSettings({
+            ...currentSettings,
             sources,
             sortBy: newSort,
             searchHistory: true,
@@ -70,7 +74,9 @@ export function useSettingsPage() {
 
     const handlePasswordToggle = (enabled: boolean) => {
         setPasswordAccess(enabled);
+        const currentSettings = settingsStore.getSettings();
         settingsStore.saveSettings({
+            ...currentSettings,
             sources,
             sortBy,
             searchHistory: true,
@@ -83,7 +89,9 @@ export function useSettingsPage() {
     const handleAddPassword = (password: string) => {
         const updated = [...accessPasswords, password];
         setAccessPasswords(updated);
+        const currentSettings = settingsStore.getSettings();
         settingsStore.saveSettings({
+            ...currentSettings,
             sources,
             sortBy,
             searchHistory: true,
@@ -96,7 +104,9 @@ export function useSettingsPage() {
     const handleRemovePassword = (password: string) => {
         const updated = accessPasswords.filter(p => p !== password);
         setAccessPasswords(updated);
+        const currentSettings = settingsStore.getSettings();
         settingsStore.saveSettings({
+            ...currentSettings,
             sources,
             sortBy,
             searchHistory: true,

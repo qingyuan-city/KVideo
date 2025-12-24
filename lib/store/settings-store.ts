@@ -4,6 +4,7 @@
 
 import type { VideoSource } from '@/lib/types';
 import { DEFAULT_SOURCES } from '@/lib/api/default-sources';
+import { ADULT_SOURCES } from '@/lib/api/adult-sources';
 
 export type SortOption =
   | 'default'
@@ -17,6 +18,7 @@ export type SortOption =
 
 export interface AppSettings {
   sources: VideoSource[];
+  adultSources: VideoSource[];
   sortBy: SortOption;
   searchHistory: boolean;
   watchHistory: boolean;
@@ -29,12 +31,14 @@ import { exportSettings, importSettings, SEARCH_HISTORY_KEY, WATCH_HISTORY_KEY }
 const SETTINGS_KEY = 'kvideo-settings';
 
 export const getDefaultSources = (): VideoSource[] => DEFAULT_SOURCES;
+export const getDefaultAdultSources = (): VideoSource[] => ADULT_SOURCES;
 
 export const settingsStore = {
   getSettings(): AppSettings {
     if (typeof window === 'undefined') {
       return {
         sources: getDefaultSources(),
+        adultSources: getDefaultAdultSources(),
         sortBy: 'default',
         searchHistory: true,
         watchHistory: true,
@@ -47,6 +51,7 @@ export const settingsStore = {
     if (!stored) {
       return {
         sources: getDefaultSources(),
+        adultSources: getDefaultAdultSources(),
         sortBy: 'default',
         searchHistory: true,
         watchHistory: true,
@@ -60,6 +65,7 @@ export const settingsStore = {
       // Validate that parsed data has all required properties
       return {
         sources: Array.isArray(parsed.sources) ? parsed.sources : getDefaultSources(),
+        adultSources: Array.isArray(parsed.adultSources) ? parsed.adultSources : getDefaultAdultSources(),
         sortBy: parsed.sortBy || 'default',
         searchHistory: parsed.searchHistory !== undefined ? parsed.searchHistory : true,
         watchHistory: parsed.watchHistory !== undefined ? parsed.watchHistory : true,
@@ -69,6 +75,7 @@ export const settingsStore = {
     } catch {
       return {
         sources: getDefaultSources(),
+        adultSources: getDefaultAdultSources(),
         sortBy: 'default',
         searchHistory: true,
         watchHistory: true,

@@ -14,6 +14,7 @@ interface DoubanMovie {
   title: string;
   cover: string;
   rate: string;
+  imdbRating?: string | null;
   url: string;
 }
 
@@ -74,13 +75,13 @@ export const MovieCard = memo(function MovieCard({ movie, onMovieClick }: MovieC
               <p className="text-sm text-[var(--text-muted)]">暂无图片</p>
             </div>
           )}
-          {movie.rate && parseFloat(movie.rate) > 0 && (
+          {movie.imdbRating && parseFloat(movie.imdbRating) > 0 && (
             <div
               className="absolute top-2 right-2 bg-black/80 px-2.5 py-1.5 flex items-center gap-1.5 rounded-[var(--radius-full)]"
             >
               <Icons.Star size={12} className="text-yellow-400 fill-yellow-400" />
               <span className="text-xs font-bold text-white">
-                {movie.rate}
+                IMDb {movie.imdbRating}
               </span>
             </div>
           )}

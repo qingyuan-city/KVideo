@@ -14,81 +14,90 @@ interface DoubanRecommendResponse {
   subjects?: DoubanSubject[];
 }
 
-interface TmdbInfo {
-  tmdbRating: string | null;
-  tmdbUrl: string | null;
+interface ImdbInfo {
+  imdbRating: string | null;
+  imdbUrl: string | null;
 }
 
-interface TmdbSearchItem {
-  id: number;
-  vote_average?: number;
+interface OmdbSearchItem {
+  imdbID?: string;
 }
 
-interface TmdbSearchResponse {
-  results?: TmdbSearchItem[];
+interface OmdbSearchResponse {
+  Response?: string;
+  Search?: OmdbSearchItem[];
 }
 
-async function fetchTmdbInfo(title: string, type: string): Promise<TmdbInfo> {
-  const tmdbApiKey = process.env.TMDB_API_KEY;
-  const tmdbReadAccessToken = process.env.TMDB_API_READ_ACCESS_TOKEN;
+interface OmdbRatingResponse {
+  Response?: string;
+  imdbRating?: string;
+}
 
-  if ((!tmdbApiKey && !tmdbReadAccessToken) || !title) {
+async function fetchImdbInfo(title: string, type: string): Promise<ImdbInfo> {
+  const omdbApiKey = process.env.OMDB_API_KEY;
+
+  if (!omdbApiKey || !title) {
     return {
-      tmdbRating: null,
-      tmdbUrl: null,
+      imdbRating: null,
+      imdbUrl: null,
     };
   }
 
   try {
-    const searchType = type === 'tv' ? 'tv' : 'movie';
-    const url = new URL(`https://api.themoviedb.org/3/search/${searchType}`);
-    url.searchParams.set('query', title);
-    url.searchParams.set('include_adult', 'false');
-    url.searchParams.set('language', 'zh-CN');
+    const searchUrl = new URL('https://www.omdbapi.com/');
+    searchUrl.searchParams.set('apikey', omdbApiKey);
+    searchUrl.searchParams.set('s', title);
+    searchUrl.searchParams.set('type', type === 'tv' ? 'series' : 'movie');
 
-    if (tmdbApiKey) {
-      url.searchParams.set('api_key', tmdbApiKey);
-    }
-
-    const headers: HeadersInit = {};
-    if (tmdbReadAccessToken) {
-      headers.Authorization = `Bearer ${tmdbReadAccessToken}`;
-    }
-
-    const response = await fetch(url, {
-      headers,
+    const searchResponse = await fetch(searchUrl, {
       next: { revalidate: 86400 }, // Cache for 24 hours
     });
 
-    if (!response.ok) {
+    if (!searchResponse.ok) {
       return {
-        tmdbRating: null,
-        tmdbUrl: null,
+        imdbRating: null,
+        imdbUrl: null,
       };
     }
 
-    const data = await response.json() as TmdbSearchResponse;
-    const firstResult = data.results?.[0];
+    const searchData = await searchResponse.json() as OmdbSearchResponse;
+    const imdbID = searchData.Search?.[0]?.imdbID;
 
-    if (firstResult?.id) {
-      const voteAverage = typeof firstResult.vote_average === 'number'
-        ? firstResult.vote_average.toFixed(1)
-        : null;
-
+    if (!imdbID) {
       return {
-        tmdbRating: voteAverage,
-        tmdbUrl: `https://www.themoviedb.org/${searchType}/${firstResult.id}`,
+        imdbRating: null,
+        imdbUrl: null,
       };
     }
+
+    const ratingUrl = new URL('https://www.omdbapi.com/');
+    ratingUrl.searchParams.set('apikey', omdbApiKey);
+    ratingUrl.searchParams.set('i', imdbID);
+
+    const ratingResponse = await fetch(ratingUrl, {
+      next: { revalidate: 86400 },
+    });
+
+    if (!ratingResponse.ok) {
+      return {
+        imdbRating: null,
+        imdbUrl: `https://www.imdb.com/title/${imdbID}/`,
+      };
+    }
+
+    const ratingData = await ratingResponse.json() as OmdbRatingResponse;
+    const imdbRating = ratingData.Response === 'True' && ratingData.imdbRating && ratingData.imdbRating !== 'N/A'
+      ? ratingData.imdbRating
+      : null;
 
     return {
-      tmdbRating: null,
-      tmdbUrl: null,
+      imdbRating,
+      imdbUrl: `https://www.imdb.com/title/${imdbID}/`,
     };
   } catch {
     return {
-      tmdbRating: null,
-      tmdbUrl: null,
+      imdbRating: null,
+      imdbUrl: null,
     };
   }
 }
@@ -117,14 +126,14 @@ export async function GET(request: Request) {
 
     const data = await response.json() as DoubanRecommendResponse;
 
-    // 转换图片链接使用代理，并补充 TMDB 评分
+    // 转换图片链接使用代理，并补充 IMDb 评分
     if (data.subjects && Array.isArray(data.subjects)) {
       data.subjects = await Promise.all(data.subjects.map(async (item) => {
-        const tmdbInfo = await fetchTmdbInfo(item.title, type);
+        const imdbInfo = await fetchImdbInfo(item.title, type);
         return {
           ...item,
           cover: item.cover ? `/api/douban/image?url=${encodeURIComponent(item.cover)}` : item.cover,
-          ...tmdbInfo,
+          ...imdbInfo,
         };
       }));
     }

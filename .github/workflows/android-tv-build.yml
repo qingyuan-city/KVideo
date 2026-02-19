@@ -1,0 +1,42 @@
+name: Android TV APK Build
+
+on:
+  workflow_dispatch: # 支持手动触发构建
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Inject KVideo URL
+        run: |
+          # 将这里的 URL 换成您自己的部署地址（确保电视能访问到）
+          # 如果您使用了 Cloudflare Tunnel，这里填您的域名
+          TARGET_URL="http://您的服务器IP:13000"
+          FILE_PATH="android-tv/app/src/main/java/com/kvideo/tv/MainActivity.kt"
+          sed -i "s|https://your-kvideo-instance.com|$TARGET_URL|g" $FILE_PATH
+          echo "URL 已替换为: $TARGET_URL"
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x android-tv/gradlew
+
+      - name: Build with Gradle
+        run: |
+          cd android-tv
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: kvideo-tv-debug-apk
+          path: android-tv/app/build/outputs/apk/debug/app-debug.apk
